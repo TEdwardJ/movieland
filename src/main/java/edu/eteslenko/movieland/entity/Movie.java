@@ -139,6 +139,7 @@ public class Movie {
                 ", countryProducer=" + countryProducer +
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
+                ", picturePath=" + picturePath +
                 '}';
     }
 }

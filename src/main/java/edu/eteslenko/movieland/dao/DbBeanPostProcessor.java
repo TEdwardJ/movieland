@@ -15,8 +15,8 @@ public class DbBeanPostProcessor implements BeanPostProcessor {
         String dbUrl = System.getenv("DATABASE_URL");
 
 
-        if (dbUrl != null) {
         BasicDataSource ds = new BasicDataSource();
+        if (dbUrl != null) {
 
             try {
                 URI dbUri = new URI(dbUrl);
@@ -33,14 +33,13 @@ public class DbBeanPostProcessor implements BeanPostProcessor {
 
         }else{
             DbProperties dbProperties = new DbProperties();
-            dataSource.setDriverClassName(dbProperties.getDriverClassName());
-            dataSource.setUsername(dbProperties.getUser());
-            dataSource.setPassword(dbProperties.getPassword());
-            dataSource.setUrl(dbProperties.getUrl());
-
+            ds.setDriverClassName(dbProperties.getDriverClassName());
+            ds.setUsername(dbProperties.getUser());
+            ds.setPassword(dbProperties.getPassword());
+            ds.setUrl(dbProperties.getUrl());
 
         }
-        return dataSource;
+        return ds;
     }
 
     @Override

@@ -6,6 +6,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import edu.eteslenko.movieland.MovieTestDataGenerator;
 import edu.eteslenko.movieland.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,23 +42,7 @@ public class JdbcMovieDaoTest {
 
     @Test
     public void getAllTest() throws SQLException {
-        List<Movie> expectedMovies = new ArrayList<>();
-        Movie movie1 = new Movie();
-        movie1.setPicturePath("test");
-        movie1.setRating(8);
-        movie1.setDescription("test test");
-        movie1.setReleaseYear(1998);
-        movie1.setPrice(123);
-        movie1.setTitle("Test Movie");
-        expectedMovies.add(movie1);
-        Movie movie2 = new Movie();
-        movie2.setPicturePath("test2");
-        movie2.setRating(9);
-        movie2.setDescription("test test2");
-        movie2.setReleaseYear(2001);
-        movie2.setPrice(321);
-        movie2.setTitle("Test Movie2");
-        expectedMovies.add(movie2);
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
         List<Movie> actualMovies = jdbcMovieDao.getAll();

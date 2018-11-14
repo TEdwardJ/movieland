@@ -27,9 +27,9 @@ public class DbProperties {
         url = props.getProperty("db.url");
         user = props.getProperty("db.user");
         password = props.getProperty("db.password");
-        server = props.getProperty("db.serverName");
-        database = props.getProperty("db.databaseName");
-        port = Integer.valueOf(props.getProperty("db.port"));
+        //server = props.getProperty("db.serverName");
+        //database = props.getProperty("db.databaseName");
+        //port = Integer.valueOf(props.getProperty("db.port"));
     }
 
     public String getUrl() {
