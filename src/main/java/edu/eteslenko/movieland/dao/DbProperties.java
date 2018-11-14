@@ -2,6 +2,8 @@ package edu.eteslenko.movieland.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class DbProperties {
@@ -23,13 +25,24 @@ public class DbProperties {
             ex.printStackTrace();
             throw new RuntimeException(ex);
         }
-        driverClassName = props.getProperty("db.driverClassName");
-        url = props.getProperty("db.url");
-        user = props.getProperty("db.user");
-        password = props.getProperty("db.password");
-        //server = props.getProperty("db.serverName");
-        //database = props.getProperty("db.databaseName");
-        //port = Integer.valueOf(props.getProperty("db.port"));
+        String dbUrl = System.getenv("DATABASE_URL");
+        if(dbUrl==null) {
+            driverClassName = props.getProperty("db.driverClassName");
+            url = props.getProperty("db.url");
+            user = props.getProperty("db.user");
+            password = props.getProperty("db.password");
+        }else{
+            URI dbUri = null;
+            try {
+                dbUri = new URI(dbUrl);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            String userInfo = dbUri.getUserInfo();
+            url = dbUrl;
+            user = userInfo.substring(0,userInfo.indexOf(":"));
+            password = userInfo.substring(userInfo.indexOf(":")+1);
+        }
     }
 
     public String getUrl() {

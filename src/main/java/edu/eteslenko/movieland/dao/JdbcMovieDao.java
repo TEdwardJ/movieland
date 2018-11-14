@@ -25,7 +25,6 @@ public class JdbcMovieDao implements MovieDao {
 
     public List<Movie> getAll() {
         final List<Movie> list =
-
                 jdbcTemplate.query(
                         movieSelectAllQuery,
                         (rs, rowNum) -> ROW_MAPPER.getRow(rs)
@@ -37,7 +36,6 @@ public class JdbcMovieDao implements MovieDao {
     @PostConstruct
     public void init() {
         jdbcTemplate = new JdbcTemplate(dataSource);
-
     }
 
 

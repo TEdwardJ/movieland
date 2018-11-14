@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
-//@WebAppConfiguration
 public class DefaulltMovieServiceTest {
 
     @Mock

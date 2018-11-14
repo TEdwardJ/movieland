@@ -11,8 +11,7 @@ CREATE TABLE movie.movie (
   picture_url        VARCHAR(256)
 );
 drop table movie.movie;
-CREATE TABLE movie.movie
-(
+CREATE TABLE movie.movie (
     m_id numeric NOT NULL,
     m_title character varying(64) NOT NULL,
     m_title_en character varying(64),

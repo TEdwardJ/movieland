@@ -30,20 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { /*"file:src/main/webapp/WEB-INF/applicationContext.xml",*/
+@ContextConfiguration(locations = {
     "file:src/main/webapp/WEB-INF/MovieDispatcher-servlet.xml",
     "classpath:testContext.xml"})
 @WebAppConfiguration
 public class MovieControllerTest {
 
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-
     @Autowired
-    MovieController movieController;
+    private MovieController movieController;
 
     @Before
     public void setup() {

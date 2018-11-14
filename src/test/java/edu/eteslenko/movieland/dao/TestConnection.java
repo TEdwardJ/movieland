@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
-//@WebAppConfiguration
 public class TestConnection {
 
     @Autowired
