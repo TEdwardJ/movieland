@@ -36,12 +36,22 @@ public class DefaulltMovieServiceTest {
     }
 
     @Test
-    public void getAllMovies() {
+    public void getAllMoviesTest() {
         List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
         when(jdbcMovieDao.getAll()).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getAllMovies();
 
         assertEquals(expectedMovies,actualMovies);
+    }
+
+    @Test
+    public void get3RandomMoviesTest() {
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
+        when(jdbcMovieDao.get3Random()).thenReturn(expectedMovies);
+
+        List<Movie> actualMovies = movieService.get3RandomMovies();
+
+        assertEquals(3,actualMovies.size());
     }
 }

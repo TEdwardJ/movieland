@@ -21,12 +21,24 @@ public class JdbcMovieDao implements MovieDao {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private String movieSelectAllQuery;
+    @Autowired
+    private String movieSelect3RandomQuery;
 
 
     public List<Movie> getAll() {
         final List<Movie> list =
                 jdbcTemplate.query(
                         movieSelectAllQuery,
+                        (rs, rowNum) -> ROW_MAPPER.getRow(rs)
+                );
+
+        return list;
+    }
+
+    public List<Movie> get3Random() {
+        final List<Movie> list =
+                jdbcTemplate.query(
+                        movieSelect3RandomQuery,
                         (rs, rowNum) -> ROW_MAPPER.getRow(rs)
                 );
 

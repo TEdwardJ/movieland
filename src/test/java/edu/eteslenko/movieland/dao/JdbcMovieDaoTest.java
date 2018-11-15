@@ -49,5 +49,15 @@ public class JdbcMovieDaoTest {
         assertEquals(expectedMovies,actualMovies);
 
     }
+
+    @Test
+    public void get3RandomTest() throws SQLException {
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
+
+        when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
+        List<Movie> actualMovies = jdbcMovieDao.get3Random();
+        assertEquals(3,actualMovies.size());
+
+    }
 }
 

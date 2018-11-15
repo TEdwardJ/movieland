@@ -67,4 +67,31 @@ public class MovieControllerTest {
         expectedMovies.stream().forEach(t->t.setDescription(null));
         assertEquals(expectedMovies,listMovie);
     }
+
+    @Test
+    public void get3RandomTest() throws Exception {
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
+
+        List<Movie> listMovie1 = performRequest("/v1/movie/random", 3);
+        List<Movie> listMovie2 = performRequest("/v1/movie/random", 2);
+
+
+        assertNotEquals(listMovie2,listMovie1);
+    }
+
+    private List<Movie> performRequest(String s, int i) throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
+
+        ObjectMapper movieMapper = new ObjectMapper();
+
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(i)));
+        MvcResult mvcResult = result.andReturn();
+        String jsonMovieArray = mvcResult.getResponse().getContentAsString();
+        return movieMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
+        });
+    }
+
 }

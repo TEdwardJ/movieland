@@ -21,4 +21,10 @@ public class MovieController {
     public List<Movie> getAllMovies(){
         return movieService.getAllMovies();
     }
+
+    @JsonView(BasicMovieView.class)
+    @GetMapping(path = "/v1/movie/random")
+    public List<Movie> get3RandomMovies(){
+        return movieService.get3RandomMovies();
+    }
 }
