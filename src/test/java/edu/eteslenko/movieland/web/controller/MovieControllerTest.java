@@ -85,8 +85,8 @@ public class MovieControllerTest {
 
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-                //.andExpect(jsonPath("$", hasSize(i)));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(i)));
         MvcResult mvcResult = result.andReturn();
         String jsonMovieArray = mvcResult.getResponse().getContentAsString();
         System.out.println(jsonMovieArray);
