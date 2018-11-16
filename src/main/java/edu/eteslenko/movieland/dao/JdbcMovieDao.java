@@ -42,7 +42,8 @@ public class JdbcMovieDao implements MovieDao {
                         (rs, rowNum) -> ROW_MAPPER.getRow(rs)
                 );
 
-        return list;
+        //Just to be on the safe side,  explicitly limit output no more than 3 elements
+        return list.subList(0,3);
     }
 
     @PostConstruct

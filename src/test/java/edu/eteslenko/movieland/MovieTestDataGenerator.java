@@ -63,7 +63,16 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie1.setTitle("Укрощение строптивого");
         movie1.setTitleEng("Il bisbetico domato");
         movieList.add(movie3);
-
+        Movie movie4 = new Movie();
+        movie2.setId(1);
+        movie2.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1._SY209_CR0,0,140,209_.jpg");
+        movie2.setRating(8.9);
+        movie2.setDescription("test test2");
+        movie2.setReleaseYear(2008);
+        movie2.setPrice(45);
+        movie2.setTitle("Джанго освобожденный");
+        movie2.setTitleEng("Django Unchained");
+        movieList.add(movie4);
         return movieList;
 
     }
