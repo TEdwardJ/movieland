@@ -1,6 +1,8 @@
 package edu.eteslenko.movieland.dao;
 
 import edu.eteslenko.movieland.entity.Movie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,8 @@ public class JdbcMovieDao implements MovieDao {
 
     private static final MovieRowMapper ROW_MAPPER = new MovieRowMapper();
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private DataSource dataSource;
 
@@ -26,14 +30,16 @@ public class JdbcMovieDao implements MovieDao {
 
 
     public List<Movie> getAll() {
-        final List<Movie> list =
+        logger.debug("getting for all movies from DB");
+        List<Movie> list =
                 jdbcTemplate.query(movieSelectAllQuery, ROW_MAPPER);
 
         return list;
     }
 
     public List<Movie> getTreeRandom() {
-        final List<Movie> list =
+        logger.debug("getting for 3 random movies from DB");
+        List<Movie> list =
                 jdbcTemplate.query(movieSelect3RandomQuery,ROW_MAPPER);
 
         //Just to be on the safe side,  explicitly limit output no more than 3 elements
@@ -43,7 +49,7 @@ public class JdbcMovieDao implements MovieDao {
     @PostConstruct
     public void init() {
         jdbcTemplate = new JdbcTemplate(dataSource);
+        logger.debug("jdbcTemplate has been setup");
     }
-
 
 }
