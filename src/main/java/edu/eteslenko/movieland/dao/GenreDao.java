@@ -5,11 +5,7 @@ import edu.eteslenko.movieland.entity.Movie;
 
 import java.util.List;
 
-public interface MovieDao {
+public interface GenreDao {
 
-    List<Movie> getAll();
-
-    List<Movie> getThreeRandom();
-
-    List<Movie> getMoviesByGenre(int genre);
+    List<Genre> getAll();
 }

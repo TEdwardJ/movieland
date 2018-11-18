@@ -6,7 +6,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import edu.eteslenko.movieland.MovieTestDataGenerator;
+import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +39,8 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
-        List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
+    public void testGetAll() throws SQLException {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
         List<Movie> actualMovies = jdbcMovieDao.getAll();
@@ -49,12 +49,21 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void get3RandomTest() throws SQLException {
-        List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
+    public void testGet3Random() throws SQLException {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
-        List<Movie> actualMovies = jdbcMovieDao.getTreeRandom();
+        List<Movie> actualMovies = jdbcMovieDao.getThreeRandom();
         assertEquals(3,actualMovies.size());
+    }
+
+    @Test
+    public void testGetByGenre() throws SQLException {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
+
+        when(jdbcTemplate.query(anyString(),any(Object[].class),any(RowMapper.class))).thenReturn(expectedMovies);
+        List<Movie> actualMovies = jdbcMovieDao.getMoviesByGenre(2);
+        assertEquals(2,actualMovies.size());
     }
 }
 
