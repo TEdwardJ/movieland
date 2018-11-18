@@ -7,11 +7,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class DefaulltMovieService implements MovieService {
+public class DefaultMovieService implements MovieService {
     @Autowired
     private MovieDao movieDao;
     @Override
     public List<Movie> getAllMovies() {
         return movieDao.getAll();
     }
+
+    @Override
+    public List<Movie> get3RandomMovies() {
+        return movieDao.getTreeRandom();
+    }
+
 }

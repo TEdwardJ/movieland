@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,12 +36,23 @@ public class DefaulltMovieServiceTest {
     }
 
     @Test
-    public void getAllMovies() {
+    public void getAllMoviesTest() {
         List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
         when(jdbcMovieDao.getAll()).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getAllMovies();
 
         assertEquals(expectedMovies,actualMovies);
+        reset(jdbcMovieDao);
+    }
+
+    @Test
+    public void get3RandomMoviesTest() {
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
+        when(jdbcMovieDao.getTreeRandom()).thenReturn(expectedMovies.subList(0,3));
+
+        List<Movie> actualMovies = movieService.get3RandomMovies();
+
+        assertEquals(3,actualMovies.size());
     }
 }

@@ -5,47 +5,19 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
-    <context:property-placeholder location="classpath:db.properties" />
-    <context:component-scan base-package = "edu.eteslenko.movieland.service"/>
-    <context:component-scan base-package = "edu.eteslenko.movieland.dao"/>
-    <context:property-placeholder location="classpath:db.properties"/>
-    <jdbc:initialize-database>
-        <jdbc:script location="classpath:db/sql/create-db.sql" />
-        <jdbc:script location="classpath:db/sql/insert-data.sql" />
-    </jdbc:initialize-database>
+    <context:component-scan base-package="edu.eteslenko.movieland.service"/>
+    <context:component-scan base-package="edu.eteslenko.movieland.dao"/>
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:db/sql/create-db.sql"/>
+        <jdbc:script location="classpath:db/sql/insert-data.sql"/>
+    </jdbc:embedded-database>
 
-    <bean id="baseDataSource"
-          class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${db.driverClassName}"/>
-        <property name="url" value="${db.url}"/>
-        <property name="username" value="${db.user}"/>
-        <property name="password" value="${db.password}"/>
+    <bean id="movieSelectAllQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT m.m_id, m_title, m_title_en, m_price, m_release_year, m_description, m_rating, picture_url FROM movie.v_movie_ui as m;"/>
     </bean>
-
-    <bean id="pool" class="org.apache.commons.pool.impl.GenericObjectPool">
-        <property name="minEvictableIdleTimeMillis"><value>300000</value></property>
-        <property name="timeBetweenEvictionRunsMillis"><value>60000</value></property>
-    </bean>
-
-    <bean id="dsConnectionFactory" class="org.apache.commons.dbcp.DataSourceConnectionFactory">
-        <constructor-arg><ref bean="baseDataSource"/></constructor-arg>
-    </bean>
-
-    <bean id="poolableConnectionFactory" class="org.apache.commons.dbcp.PoolableConnectionFactory">
-        <constructor-arg index="0"><ref bean="dsConnectionFactory"/></constructor-arg>
-        <constructor-arg index="1"><ref bean="pool"/></constructor-arg>
-        <constructor-arg index="2"><null/></constructor-arg>
-        <constructor-arg index="3"><null/></constructor-arg>
-        <constructor-arg index="4"><value>false</value></constructor-arg>
-        <constructor-arg index="5"><value>true</value></constructor-arg>
-    </bean>
-
-    <bean id="dataSource" class="org.apache.commons.dbcp.PoolingDataSource"
-          depends-on="poolableConnectionFactory">
-        <constructor-arg><ref bean="pool"/></constructor-arg>
-    </bean>
-
-    <bean id = "movieSelectAllQuery" class="java.lang.String">
-        <constructor-arg value="SELECT m.m_id, m_title, m_title_en, m_price,m_country_producer,m_release_year,m_description, m_rating, picture_url FROM movie.v_movie_ui as m;"/>
+    <bean id="movieSelect3RandomQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT m.m_id, m_title, m_title_en, m_price, m_release_year, m_description, m_rating, picture_url FROM movie.v_movie_ui as m ORDER BY RANDOM() LIMIT 3;"/>
     </bean>
 </beans>

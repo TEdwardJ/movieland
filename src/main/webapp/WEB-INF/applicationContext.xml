@@ -1,45 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <context:component-scan base-package = "edu.eteslenko.movieland.dao"/>
-    <context:component-scan base-package = "edu.eteslenko.movieland.service"/>
-    <!--<mvc:annotation-driven/>-->
-    <context:property-placeholder location="classpath:application.properties" />
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="edu.eteslenko.movieland.dao"/>
+    <context:component-scan base-package="edu.eteslenko.movieland.service"/>
+    <context:property-placeholder location="classpath:sqlquery.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
+
     <bean id="baseDataSource"
-          class="org.apache.commons.dbcp.BasicDataSource">
+          class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="minEvictableIdleTimeMillis">
+            <value>300000</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>60000</value>
+        </property>
+        <property name="initialSize">
+            <value>5</value>
+        </property>
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.user}"/>
+        <property name="password" value="${db.password}"/>
     </bean>
 
-    <bean id="pool" class="org.apache.commons.pool.impl.GenericObjectPool">
-        <property name="minEvictableIdleTimeMillis"><value>300000</value></property>
-        <property name="timeBetweenEvictionRunsMillis"><value>60000</value></property>
+    <bean class="java.net.URI" id="dbUrl" lazy-init="true">
+        <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
+    </bean>
+    <bean id="baseDataSourceHeroku"
+          class="org.apache.commons.dbcp2.BasicDataSource" lazy-init="true">
+        <property name="minEvictableIdleTimeMillis">
+            <value>300000</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>60000</value>
+        </property>
+        <property name="initialSize">
+            <value>5</value>
+        </property>
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+        <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
     </bean>
 
-    <bean id="dsConnectionFactory" class="org.apache.commons.dbcp.DataSourceConnectionFactory">
-        <constructor-arg><ref bean="baseDataSource"/></constructor-arg>
+    <bean id="dsConnectionFactory" class="org.apache.commons.dbcp2.DataSourceConnectionFactory">
+        <constructor-arg>
+            <ref bean="#{systemEnvironment['DATABASE_URL']==null ? 'baseDataSource' : 'baseDataSourceHeroku' }"/>
+        </constructor-arg>
     </bean>
 
-    <bean id="poolableConnectionFactory" class="org.apache.commons.dbcp.PoolableConnectionFactory">
-        <constructor-arg index="0"><ref bean="dsConnectionFactory"/></constructor-arg>
-        <constructor-arg index="1"><ref bean="pool"/></constructor-arg>
-        <constructor-arg index="2"><null/></constructor-arg>
-        <constructor-arg index="3"><null/></constructor-arg>
-        <constructor-arg index="4"><value>false</value></constructor-arg>
-        <constructor-arg index="5"><value>true</value></constructor-arg>
+    <bean id="poolableConnectionFactory" class="org.apache.commons.dbcp2.PoolableConnectionFactory">
+        <constructor-arg index="0">
+            <ref bean="dsConnectionFactory"/>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <null/>
+        </constructor-arg>
+        <property name="pool" ref="pool"/>
     </bean>
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.PoolingDataSource"
+    <bean id="pool" class="org.apache.commons.pool2.impl.GenericObjectPool">
+        <constructor-arg>
+            <ref bean="poolableConnectionFactory"/>
+        </constructor-arg>
+    </bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp2.PoolingDataSource"
           depends-on="poolableConnectionFactory">
-        <constructor-arg><ref bean="pool"/></constructor-arg>
+        <constructor-arg>
+            <ref bean="pool"/>
+        </constructor-arg>
     </bean>
-    <bean id="dbProperties" class="edu.eteslenko.movieland.dao.DbProperties">
+    <bean id="movieSelectAllQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.allMovies}"/>
     </bean>
-    <bean id="dataSourceConfigureBeanFactoryPostProcessor" class="edu.eteslenko.movieland.dao.DataSourceConfigureBeanFactoryPostProcessor">
-        <constructor-arg ref="dbProperties"/>
-    </bean>
-    <bean id = "movieSelectAllQuery" class="java.lang.String">
-        <constructor-arg value="SELECT m.m_id, m_title, m_title_en, m_price,m_country_producer,m_release_year,m_description, m_rating, picture_url FROM movie.v_movie_ui as m;"/>
+    <bean id="movieSelect3RandomQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.randomTreeMovies}"/>
     </bean>
 </beans>

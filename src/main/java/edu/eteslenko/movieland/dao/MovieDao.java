@@ -7,4 +7,6 @@ import java.util.List;
 public interface MovieDao {
 
     List<Movie> getAll();
+
+    public List<Movie> getTreeRandom();
 }

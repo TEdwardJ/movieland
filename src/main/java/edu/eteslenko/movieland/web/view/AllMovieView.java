@@ -1,4 +1,4 @@
 package edu.eteslenko.movieland.web.view;
 
-public class BasicMovieView {
+public class AllMovieView {
 }

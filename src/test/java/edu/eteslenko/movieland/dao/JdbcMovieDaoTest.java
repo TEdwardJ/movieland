@@ -21,12 +21,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
-//@WebAppConfiguration
 public class JdbcMovieDaoTest {
 
     @Mock
@@ -48,6 +46,15 @@ public class JdbcMovieDaoTest {
         List<Movie> actualMovies = jdbcMovieDao.getAll();
         assertEquals(expectedMovies,actualMovies);
 
+    }
+
+    @Test
+    public void get3RandomTest() throws SQLException {
+        List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
+
+        when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
+        List<Movie> actualMovies = jdbcMovieDao.getTreeRandom();
+        assertEquals(3,actualMovies.size());
     }
 }
 

@@ -1,5 +1,5 @@
 package edu.eteslenko.movieland.web.controller;
-
+import static org.mockito.Mockito.reset;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.eteslenko.movieland.MovieTestDataGenerator;
@@ -44,27 +44,48 @@ public class MovieControllerTest {
     @Autowired
     private MovieController movieController;
 
+    public MovieControllerTest() {
+    }
+
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).dispatchOptions(true).build();
+
+        this.mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext).dispatchOptions(true).build();
     }
 
     @Test
     public void getAllMoviesTest() throws Exception {
-        List<Movie> expectedMovies = new MovieTestDataGenerator().getMovies();
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/v1/movies");
+        List<Movie> listMovie1 = performRequest("/v1/movies",5);
+        List<Movie> listMovie2 = performRequest("/v1/movies",5);
+        assertEquals(listMovie1,listMovie2);
+        assertEquals(5,listMovie1.size());
+        assertEquals(5,listMovie2.size());
+    }
+
+    @Test
+    public void get3RandomTest() throws Exception {
+
+        List<Movie> listMovie1 = performRequest("/v1/movie/random", 3);
+        List<Movie> listMovie2 = performRequest("/v1/movie/random", 3);
+
+        assertNotEquals(listMovie2,listMovie1);
+    }
+
+    private List<Movie> performRequest(String s, int i) throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
 
         ObjectMapper movieMapper = new ObjectMapper();
 
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$", hasSize(i)));
         MvcResult mvcResult = result.andReturn();
         String jsonMovieArray = mvcResult.getResponse().getContentAsString();
-        List<Movie> listMovie = movieMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>(){});
-        expectedMovies.stream().forEach(t->t.setDescription(null));
-        assertEquals(expectedMovies,listMovie);
+        return movieMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
+        });
     }
+
 }
