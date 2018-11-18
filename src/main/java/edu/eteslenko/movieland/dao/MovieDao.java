@@ -8,5 +8,5 @@ public interface MovieDao {
 
     List<Movie> getAll();
 
-    public List<Movie> get3Random();
+    public List<Movie> getTreeRandom();
 }

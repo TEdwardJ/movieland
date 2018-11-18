@@ -27,31 +27,23 @@ public class JdbcMovieDao implements MovieDao {
 
     public List<Movie> getAll() {
         final List<Movie> list =
-                jdbcTemplate.query(
-                        movieSelectAllQuery,
-                        (rs, rowNum) -> ROW_MAPPER.getRow(rs)
-                );
+                jdbcTemplate.query(movieSelectAllQuery, ROW_MAPPER);
 
         return list;
     }
 
-    public List<Movie> get3Random() {
+    public List<Movie> getTreeRandom() {
         final List<Movie> list =
-                jdbcTemplate.query(
-                        movieSelect3RandomQuery,
-                        (rs, rowNum) -> ROW_MAPPER.getRow(rs)
-                );
+                jdbcTemplate.query(movieSelect3RandomQuery,ROW_MAPPER);
 
         //Just to be on the safe side,  explicitly limit output no more than 3 elements
-        return list.subList(0,3);
+        return list.subList(0, 3);
     }
 
     @PostConstruct
     public void init() {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
-
-
 
 
 }

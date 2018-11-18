@@ -49,7 +49,7 @@ public class DefaulltMovieServiceTest {
     @Test
     public void get3RandomMoviesTest() {
         List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
-        when(jdbcMovieDao.get3Random()).thenReturn(expectedMovies.subList(0,3));
+        when(jdbcMovieDao.getTreeRandom()).thenReturn(expectedMovies.subList(0,3));
 
         List<Movie> actualMovies = movieService.get3RandomMovies();
 

@@ -3,38 +3,38 @@ package edu.eteslenko.movieland.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.eteslenko.movieland.web.view.BasicMovieView;
+import edu.eteslenko.movieland.web.view.AllMovieView;
 
 import java.util.List;
 import java.util.Objects;
 
 public class Movie {
 
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     private int id;
     @JsonProperty("nameRussian")
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     private String title;
     @JsonProperty("nameNative")
-    @JsonView(BasicMovieView.class)
-    private String titleEng;
+    @JsonView(AllMovieView.class)
+    private String titleInternational;
 
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     @JsonProperty("yearOfRelease")
     private int releaseYear;
     private List<String> countryProducer;
     @JsonIgnore
     private String description;
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     private double rating;
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     private double price;
-    @JsonView(BasicMovieView.class)
+    @JsonView(AllMovieView.class)
     @JsonProperty("picturePath")
     private String picturePath;
 
-    public String getTitleEng() {
-        return titleEng;
+    public String getTitleInternational() {
+        return titleInternational;
     }
 
     public String getPicturePath() {
@@ -62,8 +62,8 @@ public class Movie {
     }
 
 
-    public void setTitleEng(String title_eng) {
-        this.titleEng = title_eng;
+    public void setTitleInternational(String title_eng) {
+        this.titleInternational = title_eng;
     }
 
     public double getPrice() {
@@ -116,7 +116,7 @@ public class Movie {
                 Double.compare(movie.getRating(), getRating()) == 0 &&
                 Double.compare(movie.getPrice(), getPrice()) == 0 &&
                 Objects.equals(getTitle(), movie.getTitle()) &&
-                Objects.equals(getTitleEng(), movie.getTitleEng()) &&
+                Objects.equals(getTitleInternational(), movie.getTitleInternational()) &&
                 Objects.equals(getCountryProducer(), movie.getCountryProducer()) &&
                 Objects.equals(getDescription(), movie.getDescription()) &&
                 Objects.equals(getPicturePath(), movie.getPicturePath());
@@ -125,7 +125,7 @@ public class Movie {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getTitle(), getTitleEng(), getReleaseYear(), getCountryProducer(), getDescription(), getRating(), getPrice(), getPicturePath());
+        return Objects.hash(getId(), getTitle(), getTitleInternational(), getReleaseYear(), getCountryProducer(), getDescription(), getRating(), getPrice(), getPicturePath());
     }
 
     @Override
@@ -133,7 +133,7 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", title_eng='" + titleEng + '\'' +
+                ", title_eng='" + titleInternational + '\'' +
                 ", price=" + price +
                 ", releaseYear=" + releaseYear +
                 ", countryProducer=" + countryProducer +

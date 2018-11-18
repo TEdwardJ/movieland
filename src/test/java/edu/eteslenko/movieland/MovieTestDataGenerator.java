@@ -16,7 +16,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie1.setReleaseYear(1994);
         movie1.setPrice(123.45);
         movie1.setTitle("Побег из Шоушенка");
-        movie1.setTitleEng("The Shawshank Redemption");
+        movie1.setTitleInternational("The Shawshank Redemption");
         movieList.add(movie1);
         Movie movie2 = new Movie();
         movie2.setId(1);
@@ -26,7 +26,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie2.setReleaseYear(1999);
         movie2.setPrice(134.67);
         movie2.setTitle("Зеленая миля");
-        movie2.setTitleEng("The Green Mile");
+        movie2.setTitleInternational("The Green Mile");
         movieList.add(movie2);
         return movieList;
     }
@@ -40,7 +40,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie1.setReleaseYear(1994);
         movie1.setPrice(123.45);
         movie1.setTitle("Побег из Шоушенка");
-        movie1.setTitleEng("The Shawshank Redemption");
+        movie1.setTitleInternational("The Shawshank Redemption");
         movieList.add(movie1);
         Movie movie2 = new Movie();
         movie2.setId(1);
@@ -50,7 +50,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie2.setReleaseYear(1999);
         movie2.setPrice(134.67);
         movie2.setTitle("Зеленая миля");
-        movie2.setTitleEng("The Green Mile");
+        movie2.setTitleInternational("The Green Mile");
         movieList.add(movie2);
 
 
@@ -61,7 +61,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie1.setReleaseYear(1992);
         movie1.setPrice(55.45);
         movie1.setTitle("Укрощение строптивого");
-        movie1.setTitleEng("Il bisbetico domato");
+        movie1.setTitleInternational("Il bisbetico domato");
         movieList.add(movie3);
         Movie movie4 = new Movie();
         movie2.setId(1);
@@ -71,7 +71,7 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie2.setReleaseYear(2008);
         movie2.setPrice(45);
         movie2.setTitle("Джанго освобожденный");
-        movie2.setTitleEng("Django Unchained");
+        movie2.setTitleInternational("Django Unchained");
         movieList.add(movie4);
         return movieList;
 

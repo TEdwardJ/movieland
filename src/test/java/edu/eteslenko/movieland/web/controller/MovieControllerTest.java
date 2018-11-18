@@ -4,13 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.eteslenko.movieland.MovieTestDataGenerator;
 import edu.eteslenko.movieland.entity.Movie;
-import edu.eteslenko.movieland.service.DefaultMovieService;
-import edu.eteslenko.movieland.web.controller.MovieController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -74,7 +70,6 @@ public class MovieControllerTest {
         List<Movie> listMovie1 = performRequest("/v1/movie/random", 3);
         List<Movie> listMovie2 = performRequest("/v1/movie/random", 3);
 
-
         assertNotEquals(listMovie2,listMovie1);
     }
 
@@ -89,7 +84,6 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$", hasSize(i)));
         MvcResult mvcResult = result.andReturn();
         String jsonMovieArray = mvcResult.getResponse().getContentAsString();
-        System.out.println(jsonMovieArray);
         return movieMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
         });
     }

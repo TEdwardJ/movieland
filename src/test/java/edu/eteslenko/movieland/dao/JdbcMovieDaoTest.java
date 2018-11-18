@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 import edu.eteslenko.movieland.MovieTestDataGenerator;
@@ -22,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +53,7 @@ public class JdbcMovieDaoTest {
         List<Movie> expectedMovies = new MovieTestDataGenerator().getMoviesForRandomTest();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
-        List<Movie> actualMovies = jdbcMovieDao.get3Random();
+        List<Movie> actualMovies = jdbcMovieDao.getTreeRandom();
         assertEquals(3,actualMovies.size());
     }
 }

@@ -17,7 +17,7 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public List<Movie> get3RandomMovies() {
-        return movieDao.get3Random();
+        return movieDao.getTreeRandom();
     }
 
 }
