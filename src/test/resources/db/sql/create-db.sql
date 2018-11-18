@@ -18,6 +18,14 @@ CREATE TABLE movie.movie_poster
     CONSTRAINT "POSTER_ID_PK" PRIMARY KEY (poster_id)
 );
 
+CREATE TABLE movie.genre
+(
+    gnr_id numeric NOT NULL,
+    gnr_name character varying(64) NOT NULL,
+    CONSTRAINT genre_pk PRIMARY KEY (gnr_id),
+    CONSTRAINT genre_uk UNIQUE (gnr_name)
+);
+
 CREATE OR REPLACE VIEW movie.v_movie_ui AS
  SELECT m.m_id,
     m.m_title,

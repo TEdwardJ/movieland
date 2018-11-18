@@ -1,12 +1,11 @@
 package edu.eteslenko.movieland.dao;
 
+import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
 
 import java.util.List;
 
-public interface MovieDao {
+public interface GenreDao {
 
-    List<Movie> getAll();
-
-    List<Movie> getTreeRandom();
+    List<Genre> getAll();
 }

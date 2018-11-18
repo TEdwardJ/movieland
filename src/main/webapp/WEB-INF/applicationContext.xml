@@ -82,8 +82,14 @@
         <constructor-arg
                 value="${query.allMovies}"/>
     </bean>
-    <bean id="movieSelect3RandomQuery" class="java.lang.String">
+    <bean id="movieSelectTreeRandomQuery" class="java.lang.String">
+    <constructor-arg
+            value="${query.randomTreeMovies}"/>
+</bean>
+
+    <bean id="genreSelectAllQuery" class="java.lang.String">
         <constructor-arg
-                value="${query.randomTreeMovies}"/>
+                value="${query.allGenres}"/>
     </bean>
+
 </beans>

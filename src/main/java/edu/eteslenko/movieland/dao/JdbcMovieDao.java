@@ -26,7 +26,7 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     private String movieSelectAllQuery;
     @Autowired
-    private String movieSelect3RandomQuery;
+    private String movieSelectTreeRandomQuery;
 
 
     public List<Movie> getAll() {
@@ -40,7 +40,7 @@ public class JdbcMovieDao implements MovieDao {
     public List<Movie> getTreeRandom() {
         logger.debug("getting for 3 random movies from DB");
         List<Movie> list =
-                jdbcTemplate.query(movieSelect3RandomQuery,ROW_MAPPER);
+                jdbcTemplate.query(movieSelectTreeRandomQuery,ROW_MAPPER);
 
         //Just to be on the safe side,  explicitly limit output no more than 3 elements
         return list.subList(0, 3);

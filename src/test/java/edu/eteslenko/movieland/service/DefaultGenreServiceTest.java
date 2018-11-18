@@ -1,8 +1,8 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.MovieLandTestDataGenerator;
-import edu.eteslenko.movieland.dao.MovieDao;
-import edu.eteslenko.movieland.entity.Movie;
+import edu.eteslenko.movieland.dao.GenreDao;
+import edu.eteslenko.movieland.entity.Genre;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,19 +16,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.reset;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
-public class DefaulltMovieServiceTest {
+public class DefaultGenreServiceTest {
 
     @Mock
-    private MovieDao jdbcMovieDao;
+    private GenreDao jdbcGenreDao;
 
     @Autowired
     @InjectMocks
-    private MovieService movieService;
+    private GenreService genreService;
 
     @Before
     public void init(){
@@ -37,22 +37,14 @@ public class DefaulltMovieServiceTest {
 
     @Test
     public void getAllMoviesTest() {
-        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
-        when(jdbcMovieDao.getAll()).thenReturn(expectedMovies);
+        List<Genre> expectedGenres = new MovieLandTestDataGenerator().getGenres();
+        when(jdbcGenreDao.getAll()).thenReturn(expectedGenres);
 
-        List<Movie> actualMovies = movieService.getAllMovies();
+        List<Genre> actualGenres = genreService.getAllGenres();
 
-        assertEquals(expectedMovies,actualMovies);
-        reset(jdbcMovieDao);
+        assertEquals(expectedGenres,actualGenres);
+        assertFalse(expectedGenres.size()==0);
     }
 
-    @Test
-    public void get3RandomMoviesTest() {
-        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
-        when(jdbcMovieDao.getTreeRandom()).thenReturn(expectedMovies.subList(0,3));
 
-        List<Movie> actualMovies = movieService.get3RandomMovies();
-
-        assertEquals(3,actualMovies.size());
-    }
 }

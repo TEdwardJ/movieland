@@ -1,11 +1,12 @@
 package edu.eteslenko.movieland;
 
+import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieTestDataGenerator implements MovieGenerator {
+public class MovieLandTestDataGenerator implements MovieDataGenerator {
     @Override
     public List<Movie> getMovies() {
         List<Movie> movieList = new ArrayList<>();
@@ -29,6 +30,18 @@ public class MovieTestDataGenerator implements MovieGenerator {
         movie2.setTitleInternational("The Green Mile");
         movieList.add(movie2);
         return movieList;
+    }
+
+    @Override
+    public List<Genre> getGenres() {
+        List<Genre> genreList = new ArrayList<>();
+
+        Genre genre1 = new Genre(1, "драма");
+        Genre genre2 = new Genre(2, "криминал");
+        genreList.add(genre1);
+        genreList.add(genre2);
+
+        return genreList;
     }
 
     public List<Movie> getMoviesForRandomTest() {

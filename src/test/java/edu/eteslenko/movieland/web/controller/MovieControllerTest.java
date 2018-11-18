@@ -1,8 +1,7 @@
 package edu.eteslenko.movieland.web.controller;
-import static org.mockito.Mockito.reset;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.eteslenko.movieland.MovieTestDataGenerator;
+import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class MovieControllerTest {
 
+    private ObjectMapper jsonMapper = new ObjectMapper();
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -55,28 +56,36 @@ public class MovieControllerTest {
     }
 
     @Test
+    public void getAllGenresTest() throws Exception {
+
+        List<Genre> listGenre1 = performGenreRequest("/v1/genre",15);
+        List<Genre> listGenre2 = performGenreRequest("/v1/genre",15);
+        assertEquals(listGenre1,listGenre2);
+        assertEquals(15,listGenre1.size());
+        assertEquals(15,listGenre2.size());
+    }
+
+    @Test
     public void getAllMoviesTest() throws Exception {
 
-        List<Movie> listMovie1 = performRequest("/v1/movies",5);
-        List<Movie> listMovie2 = performRequest("/v1/movies",5);
+        List<Movie> listMovie1 = performMovieRequest("/v1/movies",5);
+        List<Movie> listMovie2 = performMovieRequest("/v1/movies",5);
         assertEquals(listMovie1,listMovie2);
         assertEquals(5,listMovie1.size());
         assertEquals(5,listMovie2.size());
     }
 
     @Test
-    public void get3RandomTest() throws Exception {
+    public void getTreeRandomTest() throws Exception {
 
-        List<Movie> listMovie1 = performRequest("/v1/movie/random", 3);
-        List<Movie> listMovie2 = performRequest("/v1/movie/random", 3);
+        List<Movie> listMovie1 = performMovieRequest("/v1/movie/random", 3);
+        List<Movie> listMovie2 = performMovieRequest("/v1/movie/random", 3);
 
         assertNotEquals(listMovie2,listMovie1);
     }
 
-    private List<Movie> performRequest(String s, int i) throws Exception {
+    private List<Genre> performGenreRequest(String s, int i) throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
-
-        ObjectMapper movieMapper = new ObjectMapper();
 
         ResultActions result = mockMvc.perform(request);
         result.andExpect(status().isOk())
@@ -84,7 +93,20 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$", hasSize(i)));
         MvcResult mvcResult = result.andReturn();
         String jsonMovieArray = mvcResult.getResponse().getContentAsString();
-        return movieMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
+        return jsonMapper.readValue(jsonMovieArray, new TypeReference<List<Genre>>() {
+        });
+    }
+
+    private List<Movie> performMovieRequest(String s, int i) throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
+
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(i)));
+        MvcResult mvcResult = result.andReturn();
+        String jsonMovieArray = mvcResult.getResponse().getContentAsString();
+        return jsonMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
         });
     }
 
