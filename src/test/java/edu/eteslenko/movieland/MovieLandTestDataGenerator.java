@@ -6,8 +6,7 @@ import edu.eteslenko.movieland.entity.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieLandTestDataGenerator implements MovieDataGenerator {
-    @Override
+public class MovieLandTestDataGenerator{
     public List<Movie> getMovies() {
         List<Movie> movieList = new ArrayList<>();
         Movie movie1 = new Movie();
@@ -32,7 +31,6 @@ public class MovieLandTestDataGenerator implements MovieDataGenerator {
         return movieList;
     }
 
-    @Override
     public List<Genre> getGenres() {
         List<Genre> genreList = new ArrayList<>();
 

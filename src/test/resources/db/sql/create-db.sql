@@ -26,6 +26,13 @@ CREATE TABLE movie.genre
     CONSTRAINT genre_uk UNIQUE (gnr_name)
 );
 
+CREATE TABLE movie.movie_genre
+(
+    gnr_id numeric NOT NULL,
+    m_id numeric NOT NULL,
+    CONSTRAINT movie_genre_pk PRIMARY KEY (gnr_id, m_id)
+);
+
 CREATE OR REPLACE VIEW movie.v_movie_ui AS
  SELECT m.m_id,
     m.m_title,
@@ -37,3 +44,16 @@ CREATE OR REPLACE VIEW movie.v_movie_ui AS
     mpos.picture_url
    FROM movie.movie m
      JOIN movie.movie_poster mpos ON mpos.m_id = m.m_id;
+
+CREATE OR REPLACE VIEW movie.v_movie_genre_ui AS
+ SELECT m.m_id,
+    m.m_title,
+    m.m_title_en,
+    m.m_price,
+    m.m_release_year,
+    m.m_description,
+    m.m_rating,
+    m.picture_url,
+    g.gnr_id
+   FROM movie.v_movie_ui m
+     JOIN movie.movie_genre g ON m.m_id = g.m_id;

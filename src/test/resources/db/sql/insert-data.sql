@@ -26,6 +26,13 @@ INSERT INTO movie.genre(gnr_id, gnr_name) VALUES(13, 'мультфильм');
 INSERT INTO movie.genre(gnr_id, gnr_name) VALUES(14, 'семейный');
 INSERT INTO movie.genre(gnr_id, gnr_name) VALUES(15, 'вестерн');
 
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(0,1);
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(0,2);
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(1,4);
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(1,1);
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(1,2);
+INSERT INTO movie.movie_genre(m_id,gnr_id) VALUES(1,3);
+
 INSERT INTO movie.movie_poster(poster_id,m_id,picture_url) VALUES(0,(SELECT m_id FROM movie.movie m WHERE m.m_title='Побег из Шоушенка'),'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg');
 INSERT INTO movie.movie_poster(poster_id,m_id,picture_url) VALUES(1,(SELECT m_id FROM movie.movie m WHERE m.m_title='Зеленая миля'),'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1._SY209_CR0,0,140,209_.jpg');
 INSERT INTO movie.movie_poster(poster_id,m_id,picture_url) VALUES(2,(SELECT m_id FROM movie.movie m WHERE m.m_title='Унесённые призраками'),'https://images-na.ssl-images-amazon.com/images/M/MV5BOGJjNzZmMmUtMjljNC00ZjU5LWJiODQtZmEzZTU0MjBlNzgxL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1._SY209_CR0,0,140,209_.jpg');

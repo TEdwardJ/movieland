@@ -39,7 +39,7 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void testGetAll() throws SQLException {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
@@ -49,12 +49,21 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void get3RandomTest() throws SQLException {
+    public void testGet3Random() throws SQLException {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedMovies);
-        List<Movie> actualMovies = jdbcMovieDao.getTreeRandom();
+        List<Movie> actualMovies = jdbcMovieDao.getThreeRandom();
         assertEquals(3,actualMovies.size());
+    }
+
+    @Test
+    public void testGetByGenre() throws SQLException {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
+
+        when(jdbcTemplate.query(anyString(),any(Object[].class),any(RowMapper.class))).thenReturn(expectedMovies);
+        List<Movie> actualMovies = jdbcMovieDao.getMoviesByGenre(2);
+        assertEquals(2,actualMovies.size());
     }
 }
 

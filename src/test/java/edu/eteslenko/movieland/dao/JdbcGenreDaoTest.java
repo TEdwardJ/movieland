@@ -3,12 +3,10 @@ package edu.eteslenko.movieland.dao;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.entity.Genre;
-import edu.eteslenko.movieland.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +38,7 @@ public class JdbcGenreDaoTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void testGetAll() throws SQLException {
         List<Genre> expectedGenres = new MovieLandTestDataGenerator().getGenres();
 
         when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenReturn(expectedGenres);
