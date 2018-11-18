@@ -2,6 +2,7 @@ package edu.eteslenko.movieland.dao;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -61,7 +62,7 @@ public class JdbcMovieDaoTest {
     public void testGetByGenre() throws SQLException {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
 
-        when(jdbcTemplate.query(anyString(),any(Object[].class),any(RowMapper.class))).thenReturn(expectedMovies);
+        when(jdbcTemplate.query(anyString(),any(RowMapper.class), anyInt())).thenReturn(expectedMovies);
         List<Movie> actualMovies = jdbcMovieDao.getMoviesByGenre(2);
         assertEquals(2,actualMovies.size());
     }
