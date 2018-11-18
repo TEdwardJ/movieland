@@ -46,7 +46,8 @@
             <value>5</value>
         </property>
         <property name="driverClassName" value="${db.driverClassName}"/>
-        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="url"
+                  value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
     </bean>
@@ -82,8 +83,17 @@
         <constructor-arg
                 value="${query.allMovies}"/>
     </bean>
-    <bean id="movieSelect3RandomQuery" class="java.lang.String">
+    <bean id="movieSelectTreeRandomQuery" class="java.lang.String">
         <constructor-arg
-                value="${query.randomTreeMovies}"/>
+                value="${query.randomThreeMovies}"/>
+    </bean>
+
+    <bean id="genreSelectAllQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.allGenres}"/>
+    </bean>
+    <bean id="movieSelectByGenreQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.moviesByGenre}"/>
     </bean>
 </beans>

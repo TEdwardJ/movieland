@@ -3,33 +3,33 @@ package edu.eteslenko.movieland.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.eteslenko.movieland.web.view.AllMovieView;
+import edu.eteslenko.movieland.web.view.AllMoviesView;
 
 import java.util.List;
 import java.util.Objects;
 
 public class Movie {
 
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     private int id;
     @JsonProperty("nameRussian")
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     private String title;
     @JsonProperty("nameNative")
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     private String titleInternational;
 
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     @JsonProperty("yearOfRelease")
     private int releaseYear;
     private List<String> countryProducer;
     @JsonIgnore
     private String description;
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     private double rating;
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     private double price;
-    @JsonView(AllMovieView.class)
+    @JsonView(AllMoviesView.class)
     @JsonProperty("picturePath")
     private String picturePath;
 
