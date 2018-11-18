@@ -1,6 +1,7 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.dao.MovieDao;
+import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,12 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public List<Movie> get3RandomMovies() {
-        return movieDao.getTreeRandom();
+        return movieDao.getThreeRandom();
+    }
+
+    @Override
+    public List<Movie> getMoviesByGenre(int genre) {
+        return movieDao.getMoviesByGenre(genre);
     }
 
 }

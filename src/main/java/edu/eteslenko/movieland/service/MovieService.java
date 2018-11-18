@@ -10,4 +10,5 @@ public interface MovieService {
 
     List<Movie> get3RandomMovies();
 
+    List<Movie> getMoviesByGenre(int genre);
 }

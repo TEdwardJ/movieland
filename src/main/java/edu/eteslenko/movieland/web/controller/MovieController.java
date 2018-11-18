@@ -8,6 +8,7 @@ import edu.eteslenko.movieland.service.MovieService;
 import edu.eteslenko.movieland.web.view.AllMoviesView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,9 +34,14 @@ public class MovieController {
         return movieService.get3RandomMovies();
     }
 
-    //@JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/genre")
     public List<Genre> getAllGenres(){
         return genreService.getAllGenres();
+    }
+
+    @JsonView(AllMoviesView.class)
+    @GetMapping(path = "/v1/movie/genre/{id}")
+    public List<Movie> getMovieByGenre(@PathVariable("id") int genre){
+        return movieService.getMoviesByGenre(genre);
     }
 }

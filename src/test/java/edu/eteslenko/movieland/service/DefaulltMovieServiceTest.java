@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,7 @@ public class DefaulltMovieServiceTest {
     }
 
     @Test
-    public void getAllMoviesTest() {
+    public void testGetAllMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
         when(jdbcMovieDao.getAll()).thenReturn(expectedMovies);
 
@@ -47,12 +48,23 @@ public class DefaulltMovieServiceTest {
     }
 
     @Test
-    public void get3RandomMoviesTest() {
+    public void testGet3RandomMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
-        when(jdbcMovieDao.getTreeRandom()).thenReturn(expectedMovies.subList(0,3));
+        when(jdbcMovieDao.getThreeRandom()).thenReturn(expectedMovies.subList(0,3));
 
         List<Movie> actualMovies = movieService.get3RandomMovies();
 
         assertEquals(3,actualMovies.size());
+    }
+
+    @Test
+    public void testGetByGenre() {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
+        when(jdbcMovieDao.getMoviesByGenre(anyInt())).thenReturn(expectedMovies);
+
+        List<Movie> actualMovies = movieService.getMoviesByGenre(2);
+
+        assertEquals(expectedMovies,actualMovies);
+        reset(jdbcMovieDao);
     }
 }
