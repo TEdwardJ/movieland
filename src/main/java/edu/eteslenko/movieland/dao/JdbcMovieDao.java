@@ -53,7 +53,7 @@ public class JdbcMovieDao implements MovieDao {
     public List<Movie> getMoviesByGenre(int genre) {
         logger.debug("Getting for movies from DB by genre {}",genre);
         List<Movie> list =
-                jdbcTemplate.query(movieSelectByGenreQuery, new Object[]{new Integer(genre)}, ROW_MAPPER);
+                jdbcTemplate.query(movieSelectByGenreQuery, ROW_MAPPER, genre);
 
         return list;
     }
