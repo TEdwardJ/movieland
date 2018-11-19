@@ -9,8 +9,12 @@ import java.util.List;
 @Service
 public class DefaultGenreService  implements GenreService{
 
-    @Autowired
     private GenreDao jdbcGenreDao;
+
+    @Autowired
+    public DefaultGenreService(GenreDao jdbcGenreDao) {
+        this.jdbcGenreDao = jdbcGenreDao;
+    }
 
     @Override
     public List<Genre> getAllGenres() {

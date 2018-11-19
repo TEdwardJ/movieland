@@ -16,13 +16,20 @@ import java.util.List;
 @RestController
 public class MovieController {
 
-    @Autowired
     private MovieService movieService;
-
-    @Autowired
     private GenreService genreService;
 
-   @JsonView(AllMoviesView.class)
+    @Autowired
+    public void setMovieService(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+    @Autowired
+    public void setGenreService(GenreService genreService) {
+        this.genreService = genreService;
+    }
+
+    @JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/movies")
     public List<Movie> getAllMovies(){
         return movieService.getAllMovies();

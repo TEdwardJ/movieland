@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class DefaultMovieService implements MovieService {
-    @Autowired
     private MovieDao movieDao;
+
+    @Autowired
+    public DefaultMovieService(MovieDao movieDao) {
+        this.movieDao = movieDao;
+    }
+
     @Override
     public List<Movie> getAllMovies() {
         return movieDao.getAll();

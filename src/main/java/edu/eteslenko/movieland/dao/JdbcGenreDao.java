@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 import java.util.List;
+
 @Repository
 public class JdbcGenreDao implements GenreDao {
 
@@ -17,14 +16,18 @@ public class JdbcGenreDao implements GenreDao {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private DataSource dataSource;
-
-
     private JdbcTemplate jdbcTemplate;
+    private String genreSelectAllQuery;
 
     @Autowired
-    private String genreSelectAllQuery;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setGenreSelectAllQuery(String genreSelectAllQuery) {
+        this.genreSelectAllQuery = genreSelectAllQuery;
+    }
 
     @Override
     public List<Genre> getAll() {
@@ -35,9 +38,4 @@ public class JdbcGenreDao implements GenreDao {
         return list;
     }
 
-    @PostConstruct
-    public void init() {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        logger.debug("jdbcTemplate has been setup");
-    }
 }
