@@ -15,7 +15,7 @@
     <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
 
     <bean id="baseDataSource"
-          class="org.apache.commons.dbcp2.BasicDataSource">
+          class="org.apache.commons.dbcp2.BasicDataSource" lazy-init="true">
         <property name="minEvictableIdleTimeMillis">
             <value>300000</value>
         </property>
