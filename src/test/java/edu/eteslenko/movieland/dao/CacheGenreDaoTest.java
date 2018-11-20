@@ -37,7 +37,6 @@ public class CacheGenreDaoTest {
     GenreDao jdbcGenreDao;
 
     @Autowired
-    @Qualifier("cacheGenreDao")
     GenreDao cacheGenreDao;
 
     @Before
