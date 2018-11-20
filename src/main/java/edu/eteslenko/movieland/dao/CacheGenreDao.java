@@ -36,7 +36,7 @@ public class CacheGenreDao implements GenreDao {
             try {
                 firstRefreshLatch.await();
             } catch (InterruptedException e) {
-                logger.debug("Interruption error {}", e);
+                logger.error("Interruption error when waiting for first refresh completed {}", e);
             }
             logger.debug("Waiting for first refresh completed");
         }
@@ -51,7 +51,6 @@ public class CacheGenreDao implements GenreDao {
 
     @Scheduled(fixedRateString = "${app.cacheRefreshPeriod}")
     protected void refresh() {
-
         List<Genre> genreList = genreDao.getAll();
 
         Lock writeLock = refreshLock.writeLock();
