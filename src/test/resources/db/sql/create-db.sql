@@ -1,6 +1,13 @@
+/*drop view movie.v_movie_ui if exists;
+drop view movie.v_movie_genre_ui if exists;
+drop table movie.movie_poster if exists;
+drop table movie.genre if exists;
+drop table movie.movie if exists;
+drop table movie.movie_genre if exists;
+drop schema movie if exists;*/
 create schema movie;
-
-CREATE TABLE movie.movie (
+set SCHEMA movie;
+CREATE TABLE movie (
     m_id           numeric NOT NULL,
     m_title        character varying(64) NOT NULL,
     m_title_en     character varying(64),
@@ -10,7 +17,7 @@ CREATE TABLE movie.movie (
     m_rating       double precision,
     CONSTRAINT movie_pk PRIMARY KEY (m_id)
 );
-CREATE TABLE movie.movie_poster
+CREATE TABLE movie_poster
 (
     poster_id   numeric NOT NULL,
     picture_url character varying(256) NOT NULL,
@@ -26,14 +33,14 @@ CREATE TABLE movie.genre
     CONSTRAINT genre_uk UNIQUE (gnr_name)
 );
 
-CREATE TABLE movie.movie_genre
+CREATE TABLE movie_genre
 (
     gnr_id numeric NOT NULL,
     m_id numeric NOT NULL,
     CONSTRAINT movie_genre_pk PRIMARY KEY (gnr_id, m_id)
 );
 
-CREATE OR REPLACE VIEW movie.v_movie_ui AS
+CREATE OR REPLACE VIEW v_movie_ui AS
  SELECT m.m_id,
     m.m_title,
     m.m_title_en,
@@ -45,7 +52,7 @@ CREATE OR REPLACE VIEW movie.v_movie_ui AS
    FROM movie.movie m
      JOIN movie.movie_poster mpos ON mpos.m_id = m.m_id;
 
-CREATE OR REPLACE VIEW movie.v_movie_genre_ui AS
+CREATE OR REPLACE VIEW v_movie_genre_ui AS
  SELECT m.m_id,
     m.m_title,
     m.m_title_en,

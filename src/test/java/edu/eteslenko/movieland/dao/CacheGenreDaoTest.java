@@ -1,6 +1,5 @@
 package edu.eteslenko.movieland.dao;
 
-import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.entity.Genre;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,44 +15,46 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/applicationContext.xml" })
+
 @DirtiesContext
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+        "classpath:testContext.xml"})
 public class CacheGenreDaoTest {
 
-    @Mock
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
     @Qualifier("jdbcGenreDao")
-    @InjectMocks
     GenreDao jdbcGenreDao;
 
     @Autowired
     GenreDao cacheGenreDao;
 
-    @Before
-    public void init(){
-        MockitoAnnotations.initMocks(this);
-    }
-
     @Test
-    public void testGetAll() throws SQLException {
-        List<Genre> expectedGenres = new MovieLandTestDataGenerator().getGenres();
-        when(jdbcTemplate.query(anyString(),any(RowMapper.class))).thenThrow(new AssertionError("GenreDao still asks DB for genres instead of using cache"));//.thenReturn(expectedGenres);
-        List<Genre> actualGenres = cacheGenreDao.getAll();
-        assertEquals(15,actualGenres.size());
-        //Let's check my favorite genre
-        assertTrue(actualGenres.stream().anyMatch(t->t.getName().equalsIgnoreCase("комедия")));
-    }
+    public void testGetAll() throws UnsupportedEncodingException {
+        //Doing mock at this place we suppose that first cache refresh is done already
+        jdbcTemplate = mock(JdbcTemplate.class);
+        //so jdbcTemplateDao should not be called
+        when(jdbcTemplate.query(anyString(), any(RowMapper.class)))
+                .thenThrow(new AssertionError("GenreDao still asks DB for genres instead of using cache"));
+        ((JdbcGenreDao) jdbcGenreDao).setJdbcTemplate(jdbcTemplate);
 
+        List<Genre> actualGenresCache = cacheGenreDao.getAll();
+        assertEquals(15, actualGenresCache.size());
+        //Let's check my favorite genre
+        final String searchString = new String("комедия".getBytes("UTF-8"));
+        assertTrue(actualGenresCache.stream().anyMatch(t -> t.getName().equals(searchString)));
+    }
 
 
 }
