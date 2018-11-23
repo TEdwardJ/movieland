@@ -1,10 +1,3 @@
-/*drop view movie.v_movie_ui if exists;
-drop view movie.v_movie_genre_ui if exists;
-drop table movie.movie_poster if exists;
-drop table movie.genre if exists;
-drop table movie.movie if exists;
-drop table movie.movie_genre if exists;
-drop schema movie if exists;*/
 create schema movie;
 set SCHEMA movie;
 CREATE TABLE movie (
