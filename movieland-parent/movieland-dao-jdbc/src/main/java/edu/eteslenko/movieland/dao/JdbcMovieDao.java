@@ -1,6 +1,9 @@
 package edu.eteslenko.movieland.dao;
 
 import edu.eteslenko.movieland.entity.Movie;
+import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.OrderType;
+import edu.eteslenko.movieland.entity.SortingColumn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,24 +45,57 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     public List<Movie> getAll() {
-        logger.debug("getting for all movies from DB");
-        List<Movie> list =
-                jdbcTemplate.query(movieSelectAllQuery, ROW_MAPPER);
+        return getAll(MovieQuery.DEFAULT);
+    }
 
+
+
+    public List<Movie> getAll(MovieQuery movieQuery) {
+        logger.debug("getting for all movies from DB");
+        String actualQuery = prepareQuery(movieSelectAllQuery,movieQuery);
+        List<Movie> list =
+                jdbcTemplate.query(actualQuery, ROW_MAPPER);
+
+        return list;
+    }
+
+    private String prepareQuery(String initialQuery, MovieQuery movieQuery) {
+        if (movieQuery == MovieQuery.DEFAULT){
+            return initialQuery;
+        }
+        logger.debug("MovieQuery is not default, so preparing query is needed");
+        return new StringBuilder(initialQuery.replace(";"," ORDER BY "))
+                .append(" ")
+                .append(movieQuery.getSortingColumn().getSortingColumn())
+                .append(" ")
+                .append(movieQuery.getOrderType())
+                .append(";")
+                .toString();
+    }
+
+    @Override
+    public List<Movie> getThreeRandom(MovieQuery movieQuery) {
+        logger.debug("getting for 3 random movies from DB");
+        String actualQuery = prepareQuery(movieSelectThreeRandomQuery,movieQuery);
+        List<Movie> list =
+                jdbcTemplate.query(actualQuery, ROW_MAPPER);
         return list;
     }
 
     public List<Movie> getThreeRandom() {
-        logger.debug("getting for 3 random movies from DB");
-        List<Movie> list =
-                jdbcTemplate.query(movieSelectThreeRandomQuery, ROW_MAPPER);
-        return list;
+        return getThreeRandom(MovieQuery.DEFAULT);
     }
 
     public List<Movie> getMoviesByGenre(int genre) {
+        return getMoviesByGenre(genre, MovieQuery.DEFAULT);
+    }
+
+    @Override
+    public List<Movie> getMoviesByGenre(int genre, MovieQuery movieQuery) {
         logger.debug("Getting for movies from DB by genre {}",genre);
+        String actualQuery = prepareQuery(movieSelectByGenreQuery,movieQuery);
         List<Movie> list =
-                jdbcTemplate.query(movieSelectByGenreQuery, ROW_MAPPER, genre);
+                jdbcTemplate.query(actualQuery, ROW_MAPPER, genre);
         return list;
     }
 

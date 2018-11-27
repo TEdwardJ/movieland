@@ -24,5 +24,4 @@
           p:autoDetectFields="false"
           p:simpleDateFormat="yyyy-MM-dd"/>
 
-
 </beans>

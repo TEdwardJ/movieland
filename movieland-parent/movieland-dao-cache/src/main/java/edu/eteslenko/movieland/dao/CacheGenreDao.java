@@ -20,28 +20,27 @@ public class CacheGenreDao implements GenreDao {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private final ReentrantReadWriteLock refreshLock = new ReentrantReadWriteLock();
     private GenreDao genreDao;
-    //As application has only one thread  to write into cache, volatile is enough
+    //As application has only one thread  to change cache collection link, volatile is enough
     private volatile List<Genre> genreList;
-
-    @Autowired
-    public void setGenreDao(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
 
     @Override
     public List<Genre> getAll() {
-        List<Genre> localGenreList;
-        logger.debug("Going to acquire read lock");
-        localGenreList = new ArrayList(genreList);
+        logger.debug("Going to read cache");
+        List<Genre> localGenreList = new ArrayList(genreList);;
         return localGenreList;
     }
 
     @Scheduled(fixedRateString = "${app.cacheRefreshPeriod}",initialDelayString = "${app.cacheRefreshPeriod}")
     @PostConstruct
     protected void refresh() {
-        logger.debug("Going to acquire write lock");
-        List<Genre> genreList = new ArrayList(genreDao.getAll());
+        logger.debug("Going to update cache collection link");
+        List<Genre> genreList = new ArrayList<>(genreDao.getAll());
         this.genreList = genreList;
-        logger.debug("Refresh is completed and write unlock is done. Rows "+genreList.size());
+        logger.debug("Refresh is completed. Rows {}", genreList.size());
+    }
+
+   @Autowired
+    public void setGenreDao(GenreDao genreDao) {
+        this.genreDao = genreDao;
     }
 }
