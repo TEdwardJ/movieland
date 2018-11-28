@@ -12,6 +12,12 @@ import java.util.List;
 public class DefaultMovieService implements MovieService {
     private MovieDao movieDao;
 
+
+    @Autowired
+    public DefaultMovieService(MovieDao movieDao) {
+        this.movieDao = movieDao;
+    }
+
     @Override
     public List<Movie> getAllMovies(MovieQuery movieQuery) {
         return movieDao.getAll(movieQuery);
@@ -41,12 +47,5 @@ public class DefaultMovieService implements MovieService {
     public List<Movie> getMoviesByGenre(int genre, MovieQuery movieQuery) {
         return movieDao.getMoviesByGenre(genre, movieQuery);
     }
-
-
-    @Autowired
-    public DefaultMovieService(MovieDao movieDao) {
-        this.movieDao = movieDao;
-    }
-
 
 }

@@ -29,7 +29,6 @@ public class MovieController {
         return movieService.getAllMovies(movieQuery);
     }
 
-
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/movie/random")
     public List<Movie> getThreeRandomMovies(@RequestParam(required = false) HashMap<String, String> params) {
@@ -61,5 +60,4 @@ public class MovieController {
     public void setGenreService(GenreService genreService) {
         this.genreService = genreService;
     }
-
 }

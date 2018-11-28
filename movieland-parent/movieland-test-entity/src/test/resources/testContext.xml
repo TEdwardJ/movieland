@@ -16,8 +16,8 @@
                            http://www.springframework.org/schema/jdbc
                            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
     <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
-    <context:component-scan base-package="edu.eteslenko.movieland.service"/>
     <context:component-scan base-package="edu.eteslenko.movieland.dao"/>
+    <context:component-scan base-package="edu.eteslenko.movieland.service"/>
     <task:annotation-driven scheduler="myScheduler"/>
     <task:scheduler id="myScheduler" pool-size="3"/>
     <jdbc:embedded-database id="dataSource" type="H2">

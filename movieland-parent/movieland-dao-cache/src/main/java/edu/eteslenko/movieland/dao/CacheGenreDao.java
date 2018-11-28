@@ -20,7 +20,7 @@ public class CacheGenreDao implements GenreDao {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private final ReentrantReadWriteLock refreshLock = new ReentrantReadWriteLock();
     private GenreDao genreDao;
-    //As application has only one thread  to change cache collection link, volatile is enough
+    //As the application has only one thread to change cache collection link, volatile is enough
     private volatile List<Genre> genreList;
 
     @Override
@@ -30,7 +30,7 @@ public class CacheGenreDao implements GenreDao {
         return localGenreList;
     }
 
-    @Scheduled(fixedRateString = "${app.cacheRefreshPeriod}",initialDelayString = "${app.cacheRefreshPeriod}")
+    @Scheduled(fixedRateString = "${app.cacheRefreshPeriod}", initialDelayString = "${app.cacheRefreshPeriod}")
     @PostConstruct
     protected void refresh() {
         logger.debug("Going to update cache collection link");
