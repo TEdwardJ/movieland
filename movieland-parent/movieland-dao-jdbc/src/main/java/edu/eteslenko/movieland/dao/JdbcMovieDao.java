@@ -24,20 +24,9 @@ public class JdbcMovieDao implements MovieDao {
     private String movieSelectThreeRandomQuery;
     private String movieSelectByGenreQuery;
 
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    @Autowired
-    public void setMovieSelectAllQuery(String movieSelectAllQuery) {
-        this.movieSelectAllQuery = movieSelectAllQuery;
-    }
-
     public List<Movie> getAll() {
         return getAll(MovieQuery.DEFAULT);
     }
-
 
 
     public List<Movie> getAll(MovieQuery movieQuery) {
@@ -98,5 +87,16 @@ public class JdbcMovieDao implements MovieDao {
     public void setMovieSelectByGenreQuery(String movieSelectByGenreQuery) {
         this.movieSelectByGenreQuery = movieSelectByGenreQuery;
     }
+
+    @Autowired
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setMovieSelectAllQuery(String movieSelectAllQuery) {
+        this.movieSelectAllQuery = movieSelectAllQuery;
+    }
+
 
 }
