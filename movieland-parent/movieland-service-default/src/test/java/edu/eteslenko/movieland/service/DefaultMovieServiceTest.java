@@ -3,6 +3,7 @@ package edu.eteslenko.movieland.service;
 import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.dao.MovieDao;
 import edu.eteslenko.movieland.entity.Movie;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
@@ -24,7 +26,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
 @ContextConfiguration(locations = { "classpath:testContext.xml" })
-public class DefaulltMovieServiceTest {
+public class DefaultMovieServiceTest {
 
     @Mock
     private MovieDao jdbcMovieDao;
@@ -41,7 +43,7 @@ public class DefaulltMovieServiceTest {
     @Test
     public void testGetAllMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
-        when(jdbcMovieDao.getAll()).thenReturn(expectedMovies);
+        when(jdbcMovieDao.getAll(any(MovieRequest.class))).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getAllMovies();
 
@@ -54,7 +56,7 @@ public class DefaulltMovieServiceTest {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
         when(jdbcMovieDao.getThreeRandom()).thenReturn(expectedMovies.subList(0,3));
 
-        List<Movie> actualMovies = movieService.get3RandomMovies();
+        List<Movie> actualMovies = movieService.getThreeRandomMovies();
 
         assertEquals(3,actualMovies.size());
     }
@@ -62,7 +64,7 @@ public class DefaulltMovieServiceTest {
     @Test
     public void testGetByGenre() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
-        when(jdbcMovieDao.getMoviesByGenre(anyInt())).thenReturn(expectedMovies);
+        when(jdbcMovieDao.getMoviesByGenre(anyInt(),any(MovieRequest.class))).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getMoviesByGenre(2);
 

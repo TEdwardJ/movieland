@@ -2,8 +2,7 @@ package edu.eteslenko.movieland.web.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.eteslenko.movieland.entity.Genre;
-import edu.eteslenko.movieland.entity.Movie;
+import edu.eteslenko.movieland.entity.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
@@ -95,6 +96,15 @@ public class MovieControllerTest {
     }
 
     @Test
+    public void testGetAllMoviesWithSorting() throws Exception {
+        List<Movie> listMovie1 = performMovieRequest("/v1/movies?rating=desc", 5);
+        assertEquals(5, listMovie1.size());
+        assertEquals(8.9, listMovie1.get(0).getRating(),0);
+        List<Movie> listMovie2 = performMovieRequest("/v1/movies?rating=asc", 5);
+        assertEquals(8.9, listMovie2.get(0).getRating(),0);
+    }
+
+    @Test
     public void testGetTreeRandom() throws Exception {
 
         List<Movie> listMovie1 = performMovieRequest("/v1/movie/random", 3);
@@ -129,4 +139,16 @@ public class MovieControllerTest {
         });
     }
 
+
+
+
+    @Test
+    public void testGetMoviesByGenreWithSorting() throws Exception {
+        List<Movie> listMovie1 = performMovieRequest("/v1/movie/genre/2?rating=desc", 2);
+        assertEquals(2, listMovie1.size());
+        assertEquals(8.9, listMovie1.get(0).getRating(),0);
+        List<Movie> listMovie2 = performMovieRequest("/v1/movie/genre/2?price=desc", 2);
+        assertEquals(134.67, listMovie2.get(0).getPrice(),0);
+
+    }
 }

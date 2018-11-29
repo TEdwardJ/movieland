@@ -1,14 +1,12 @@
 package edu.eteslenko.movieland.dao;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.entity.Movie;
+import edu.eteslenko.movieland.entity.MovieRequest;
+import edu.eteslenko.movieland.entity.OrderType;
+import edu.eteslenko.movieland.entity.SortingColumn;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +64,21 @@ public class JdbcMovieDaoTest {
         Mockito.when(jdbcTemplate.query(Matchers.anyString(), Matchers.any(RowMapper.class), Matchers.anyInt())).thenReturn(expectedMovies);
         List<Movie> actualMovies = jdbcMovieDao.getMoviesByGenre(2);
         Assert.assertEquals(2,actualMovies.size());
+    }
+
+    @Test
+    public void testPrepareQuery(){
+        String sql = "SELECT * FROM MOVIE m;";
+        String newSql1 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,MovieRequest.DEFAULT);
+        assertEquals(newSql1, sql);
+        String newSql2 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,new MovieRequest(SortingColumn.PRICE, OrderType.ASC));
+        assertNotEquals(newSql2, sql);
+        assertTrue(newSql2.contains("m_price ASC"));
+
+        String newSql3 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,new MovieRequest(SortingColumn.PRICE, OrderType.DESC));
+        assertNotEquals(newSql3, sql);
+        assertTrue(newSql3.contains("m_price DESC"));
+
     }
 }
 

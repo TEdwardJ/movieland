@@ -12,13 +12,14 @@ public class DefaultGenreService  implements GenreService{
 
     private GenreDao genreDao;
 
+    @Override
+    public List<Genre> getAllGenres() {
+        return genreDao.getAll();
+    }
+
     @Autowired
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;
     }
 
-    @Override
-    public List<Genre> getAllGenres() {
-        return genreDao.getAll();
-    }
 }

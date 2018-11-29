@@ -22,7 +22,6 @@ public class Movie {
     @JsonView(AllMoviesView.class)
     @JsonProperty("yearOfRelease")
     private int releaseYear;
-    private List<String> countryProducer;
     @JsonIgnore
     private String description;
     @JsonView(AllMoviesView.class)
@@ -82,14 +81,6 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
-    public List<String> getCountryProducer() {
-        return countryProducer;
-    }
-
-    public void setCountryProducer(List<String> countryProducer) {
-        this.countryProducer = countryProducer;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -112,12 +103,10 @@ public class Movie {
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
         return getId() == movie.getId() &&
-                getReleaseYear() == movie.getReleaseYear() &&
                 Double.compare(movie.getRating(), getRating()) == 0 &&
                 Double.compare(movie.getPrice(), getPrice()) == 0 &&
                 Objects.equals(getTitle(), movie.getTitle()) &&
                 Objects.equals(getTitleInternational(), movie.getTitleInternational()) &&
-                Objects.equals(getCountryProducer(), movie.getCountryProducer()) &&
                 Objects.equals(getDescription(), movie.getDescription()) &&
                 Objects.equals(getPicturePath(), movie.getPicturePath());
     }
@@ -125,7 +114,7 @@ public class Movie {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getTitle(), getTitleInternational(), getReleaseYear(), getCountryProducer(), getDescription(), getRating(), getPrice(), getPicturePath());
+        return Objects.hash(getId(), getTitle(), getTitleInternational(), getReleaseYear(), getDescription(), getRating(), getPrice(), getPicturePath());
     }
 
     @Override
@@ -136,7 +125,6 @@ public class Movie {
                 ", title_eng='" + titleInternational + '\'' +
                 ", price=" + price +
                 ", releaseYear=" + releaseYear +
-                ", countryProducer=" + countryProducer +
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", picturePath=" + picturePath +

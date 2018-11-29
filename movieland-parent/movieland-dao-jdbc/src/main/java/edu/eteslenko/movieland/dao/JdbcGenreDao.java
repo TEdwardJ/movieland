@@ -19,6 +19,14 @@ public class JdbcGenreDao implements GenreDao {
     private JdbcTemplate jdbcTemplate;
     private String genreSelectAllQuery;
 
+    public List<Genre> getAll() {
+        logger.debug("Getting all genres from DB");
+        List<Genre> list =
+                jdbcTemplate.query(genreSelectAllQuery, ROW_MAPPER);
+
+        return list;
+    }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -29,12 +37,5 @@ public class JdbcGenreDao implements GenreDao {
         this.genreSelectAllQuery = genreSelectAllQuery;
     }
 
-    public List<Genre> getAll() {
-        logger.debug("Getting all genres from DB");
-        List<Genre> list =
-                jdbcTemplate.query(genreSelectAllQuery, ROW_MAPPER);
-
-        return list;
-    }
 
 }
