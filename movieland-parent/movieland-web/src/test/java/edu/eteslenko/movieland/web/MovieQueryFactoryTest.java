@@ -1,6 +1,6 @@
 package edu.eteslenko.movieland.web;
 
-import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.OrderType;
 import edu.eteslenko.movieland.entity.SortingColumn;
 import org.junit.Test;
@@ -17,19 +17,19 @@ public class MovieQueryFactoryTest {
     public void testGetMovieQuery(){
         Map<String,String> requestMap = new HashMap<>();
         requestMap.put("rating","desc");
-        MovieQuery movieQuery1 = getMovieQuery(requestMap);
-        assertEquals(new MovieQuery(SortingColumn.RATING,OrderType.DESC), movieQuery1);
+        MovieRequest movieRequest1 = getMovieQuery(requestMap);
+        assertEquals(new MovieRequest(SortingColumn.RATING,OrderType.DESC), movieRequest1);
 
         requestMap.put("rating","asc");
-        MovieQuery movieQuery2 = getMovieQuery(requestMap);
-        assertEquals(new MovieQuery(SortingColumn.RATING,OrderType.DESC), movieQuery2);
+        MovieRequest movieRequest2 = getMovieQuery(requestMap);
+        assertEquals(new MovieRequest(SortingColumn.RATING,OrderType.DESC), movieRequest2);
 
         requestMap.clear();
-        MovieQuery movieQuery3 = getMovieQuery(requestMap);
-        assertEquals(MovieQuery.DEFAULT, movieQuery3);
+        MovieRequest movieRequest3 = getMovieQuery(requestMap);
+        assertEquals(MovieRequest.DEFAULT, movieRequest3);
 
         requestMap.put("aaa","bbbdesc");
-        MovieQuery movieQuery4 = getMovieQuery(requestMap);
-        assertEquals(MovieQuery.DEFAULT, movieQuery4);
+        MovieRequest movieRequest4 = getMovieQuery(requestMap);
+        assertEquals(MovieRequest.DEFAULT, movieRequest4);
     }
 }

@@ -3,7 +3,7 @@ package edu.eteslenko.movieland.service;
 import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.dao.MovieDao;
 import edu.eteslenko.movieland.entity.Movie;
-import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +43,7 @@ public class DefaultMovieServiceTest {
     @Test
     public void testGetAllMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
-        when(jdbcMovieDao.getAll(any(MovieQuery.class))).thenReturn(expectedMovies);
+        when(jdbcMovieDao.getAll(any(MovieRequest.class))).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getAllMovies();
 
@@ -64,7 +64,7 @@ public class DefaultMovieServiceTest {
     @Test
     public void testGetByGenre() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
-        when(jdbcMovieDao.getMoviesByGenre(anyInt(),any(MovieQuery.class))).thenReturn(expectedMovies);
+        when(jdbcMovieDao.getMoviesByGenre(anyInt(),any(MovieRequest.class))).thenReturn(expectedMovies);
 
         List<Movie> actualMovies = movieService.getMoviesByGenre(2);
 

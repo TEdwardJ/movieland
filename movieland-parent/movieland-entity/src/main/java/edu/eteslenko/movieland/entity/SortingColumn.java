@@ -2,8 +2,8 @@ package edu.eteslenko.movieland.entity;
 
 
 public enum SortingColumn {
-    RATING("m_rating"),
-    PRICE("m_price"),
+    RATING("rating"),
+    PRICE("price"),
     DEFAULT("");
 
     private String sortingColumn;

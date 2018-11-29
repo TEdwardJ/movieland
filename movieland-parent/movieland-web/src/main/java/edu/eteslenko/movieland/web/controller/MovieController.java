@@ -24,17 +24,17 @@ public class MovieController {
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/movies")
     public List<Movie> getAllMovies(@RequestParam(required = false) HashMap<String, String> params) {
-        MovieQuery movieQuery = getMovieQuery(params);
-        logger.debug("MovieQuery is {}", movieQuery);
-        return movieService.getAllMovies(movieQuery);
+        MovieRequest movieRequest = getMovieQuery(params);
+        logger.debug("MovieRequest is {}", movieRequest);
+        return movieService.getAllMovies(movieRequest);
     }
 
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/movie/random")
     public List<Movie> getThreeRandomMovies(@RequestParam(required = false) HashMap<String, String> params) {
-        MovieQuery movieQuery = getMovieQuery(params);
-        logger.debug("MovieQuery is {}", movieQuery);
-        return movieService.getThreeRandomMovies(movieQuery);
+        MovieRequest movieRequest = getMovieQuery(params);
+        logger.debug("MovieRequest is {}", movieRequest);
+        return movieService.getThreeRandomMovies(movieRequest);
     }
 
     @GetMapping(path = "/v1/genre")
@@ -46,9 +46,9 @@ public class MovieController {
     @GetMapping(path = "/v1/movie/genre/{id}")
     public List<Movie> getMovieByGenre(@PathVariable("id") int genre,
                                        @RequestParam(required = false) HashMap<String, String> params) {
-        MovieQuery movieQuery = getMovieQuery(params);
-        logger.debug("MovieQuery is {}", movieQuery);
-        return movieService.getMoviesByGenre(genre, movieQuery);
+        MovieRequest movieRequest = getMovieQuery(params);
+        logger.debug("MovieRequest is {}", movieRequest);
+        return movieService.getMoviesByGenre(genre, movieRequest);
     }
 
     @Autowired

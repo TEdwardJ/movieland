@@ -1,21 +1,21 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.entity.Movie;
-import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.MovieRequest;
 
 import java.util.List;
 
 public interface MovieService {
 
-    List<Movie> getAllMovies(MovieQuery movieQuery);
+    List<Movie> getAllMovies(MovieRequest movieRequest);
 
     List<Movie> getAllMovies();
 
-    List<Movie> getThreeRandomMovies(MovieQuery movieQuery);
+    List<Movie> getThreeRandomMovies(MovieRequest movieRequest);
 
     List<Movie> getThreeRandomMovies();
 
     List<Movie> getMoviesByGenre(int genre);
 
-    List<Movie> getMoviesByGenre(int genre, MovieQuery movieQuery);
+    List<Movie> getMoviesByGenre(int genre, MovieRequest movieRequest);
 }

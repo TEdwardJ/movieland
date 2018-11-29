@@ -2,12 +2,12 @@ package edu.eteslenko.movieland.entity;
 
 import java.util.Objects;
 
-public class MovieQuery {
-    public static final MovieQuery DEFAULT = new MovieQuery(SortingColumn.DEFAULT,OrderType.DEFAULT);
-    SortingColumn sortingColumn;
-    OrderType orderType;
+public class MovieRequest {
+    public static final MovieRequest DEFAULT = new MovieRequest(SortingColumn.DEFAULT,OrderType.DEFAULT);
+    private SortingColumn sortingColumn;
+    private OrderType orderType;
 
-    public MovieQuery(SortingColumn sortingColumn, OrderType orderType) {
+    public MovieRequest(SortingColumn sortingColumn, OrderType orderType) {
         this.sortingColumn = sortingColumn;
         this.orderType = orderType;
     }
@@ -24,7 +24,7 @@ public class MovieQuery {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MovieQuery that = (MovieQuery) o;
+        MovieRequest that = (MovieRequest) o;
         return getSortingColumn() == that.getSortingColumn() &&
                 getOrderType() == that.getOrderType();
     }
@@ -37,7 +37,7 @@ public class MovieQuery {
 
     @Override
     public String toString() {
-        return "MovieQuery{" +
+        return "MovieRequest{" +
                 "sortingColumn=" + sortingColumn +
                 ", orderType=" + orderType +
                 '}';

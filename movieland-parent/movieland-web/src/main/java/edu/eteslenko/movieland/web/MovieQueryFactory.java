@@ -1,6 +1,6 @@
 package edu.eteslenko.movieland.web;
 
-import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.OrderType;
 import edu.eteslenko.movieland.entity.SortingColumn;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MovieQueryFactory {
 
-    public static MovieQuery getMovieQuery(Map<String, String> sortingParams) {
+    public static MovieRequest getMovieQuery(Map<String, String> sortingParams) {
 
         SortingColumn sortingColumn = Arrays.stream(SortingColumn.values())
                 .filter(t -> sortingParams.containsKey(t.name().toLowerCase()))
@@ -17,7 +17,7 @@ public class MovieQueryFactory {
                 .orElseGet(() -> SortingColumn.DEFAULT);
 
         if (sortingColumn == SortingColumn.DEFAULT) {
-            return MovieQuery.DEFAULT;
+            return MovieRequest.DEFAULT;
         }
 
         OrderType orderType = OrderType.DEFAULT;
@@ -31,8 +31,8 @@ public class MovieQueryFactory {
                     .orElseGet(() -> OrderType.DEFAULT);
         }
         if (orderType == OrderType.DEFAULT) {
-            return MovieQuery.DEFAULT;
+            return MovieRequest.DEFAULT;
         }
-        return new MovieQuery(sortingColumn, orderType);
+        return new MovieRequest(sortingColumn, orderType);
     }
 }

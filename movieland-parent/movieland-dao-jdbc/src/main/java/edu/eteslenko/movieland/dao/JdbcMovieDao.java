@@ -1,20 +1,22 @@
 package edu.eteslenko.movieland.dao;
 
 import edu.eteslenko.movieland.entity.Movie;
-import edu.eteslenko.movieland.entity.MovieQuery;
-import edu.eteslenko.movieland.entity.OrderType;
-import edu.eteslenko.movieland.entity.SortingColumn;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcMovieDao implements MovieDao {
 
+    private Map<String, String> columnMapping = new HashMap<>();
     private static final MovieRowMapper ROW_MAPPER = new MovieRowMapper();
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -25,54 +27,53 @@ public class JdbcMovieDao implements MovieDao {
     private String movieSelectByGenreQuery;
 
     public List<Movie> getAll() {
-        return getAll(MovieQuery.DEFAULT);
+        return getAll(MovieRequest.DEFAULT);
     }
 
-
-    public List<Movie> getAll(MovieQuery movieQuery) {
+    public List<Movie> getAll(MovieRequest movieRequest) {
         logger.debug("getting for all movies from DB");
-        String actualQuery = prepareQuery(movieSelectAllQuery,movieQuery);
+        String actualQuery = prepareQuery(movieSelectAllQuery, movieRequest);
         List<Movie> list =
                 jdbcTemplate.query(actualQuery, ROW_MAPPER);
 
         return list;
     }
 
-    private String prepareQuery(String initialQuery, MovieQuery movieQuery) {
-        if (movieQuery == MovieQuery.DEFAULT){
+    protected String prepareQuery(String initialQuery, MovieRequest movieRequest) {
+        if (movieRequest == MovieRequest.DEFAULT){
             return initialQuery;
         }
-        logger.debug("MovieQuery is not default, so preparing query is needed");
+        logger.debug("MovieRequest is not default, so preparing query is needed");
         return new StringBuilder(initialQuery.replace(";"," ORDER BY "))
                 .append(" ")
-                .append(movieQuery.getSortingColumn().getSortingColumn())
+                .append(columnMapping.get(movieRequest.getSortingColumn().name()))
                 .append(" ")
-                .append(movieQuery.getOrderType())
+                .append(movieRequest.getOrderType().name())
                 .append(";")
                 .toString();
     }
 
     @Override
-    public List<Movie> getThreeRandom(MovieQuery movieQuery) {
+    public List<Movie> getThreeRandom(MovieRequest movieRequest) {
         logger.debug("getting for 3 random movies from DB");
-        String actualQuery = prepareQuery(movieSelectThreeRandomQuery,movieQuery);
+        String actualQuery = prepareQuery(movieSelectThreeRandomQuery, movieRequest);
         List<Movie> list =
                 jdbcTemplate.query(actualQuery, ROW_MAPPER);
         return list;
     }
 
     public List<Movie> getThreeRandom() {
-        return getThreeRandom(MovieQuery.DEFAULT);
+        return getThreeRandom(MovieRequest.DEFAULT);
     }
 
     public List<Movie> getMoviesByGenre(int genre) {
-        return getMoviesByGenre(genre, MovieQuery.DEFAULT);
+        return getMoviesByGenre(genre, MovieRequest.DEFAULT);
     }
 
     @Override
-    public List<Movie> getMoviesByGenre(int genre, MovieQuery movieQuery) {
+    public List<Movie> getMoviesByGenre(int genre, MovieRequest movieRequest) {
         logger.debug("Getting for movies from DB by genre {}",genre);
-        String actualQuery = prepareQuery(movieSelectByGenreQuery,movieQuery);
+        String actualQuery = prepareQuery(movieSelectByGenreQuery, movieRequest);
         List<Movie> list =
                 jdbcTemplate.query(actualQuery, ROW_MAPPER, genre);
         return list;
@@ -98,5 +99,9 @@ public class JdbcMovieDao implements MovieDao {
         this.movieSelectAllQuery = movieSelectAllQuery;
     }
 
-
+    @PostConstruct
+    public void initMapping(){
+        columnMapping.put("RATING","m_rating");
+        columnMapping.put("PRICE","m_price");
+    }
 }

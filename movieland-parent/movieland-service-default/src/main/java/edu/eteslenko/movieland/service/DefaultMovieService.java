@@ -1,9 +1,8 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.dao.MovieDao;
-import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
-import edu.eteslenko.movieland.entity.MovieQuery;
+import edu.eteslenko.movieland.entity.MovieRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,33 +18,33 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMovies(MovieQuery movieQuery) {
-        return movieDao.getAll(movieQuery);
+    public List<Movie> getAllMovies(MovieRequest movieRequest) {
+        return movieDao.getAll(movieRequest);
     }
 
     @Override
     public List<Movie> getAllMovies() {
-        return movieDao.getAll(MovieQuery.DEFAULT);
+        return movieDao.getAll(MovieRequest.DEFAULT);
     }
 
     @Override
-    public List<Movie> getThreeRandomMovies(MovieQuery movieQuery) {
+    public List<Movie> getThreeRandomMovies(MovieRequest movieRequest) {
         return movieDao.getThreeRandom();
     }
 
     @Override
     public List<Movie> getThreeRandomMovies() {
-        return getThreeRandomMovies(MovieQuery.DEFAULT);
+        return getThreeRandomMovies(MovieRequest.DEFAULT);
     }
 
     @Override
     public List<Movie> getMoviesByGenre(int genre) {
-        return getMoviesByGenre(genre, MovieQuery.DEFAULT);
+        return getMoviesByGenre(genre, MovieRequest.DEFAULT);
     }
 
     @Override
-    public List<Movie> getMoviesByGenre(int genre, MovieQuery movieQuery) {
-        return movieDao.getMoviesByGenre(genre, movieQuery);
+    public List<Movie> getMoviesByGenre(int genre, MovieRequest movieRequest) {
+        return movieDao.getMoviesByGenre(genre, movieRequest);
     }
 
 }
