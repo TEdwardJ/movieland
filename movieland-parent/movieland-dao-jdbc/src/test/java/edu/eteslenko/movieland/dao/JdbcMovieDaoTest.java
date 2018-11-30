@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ContextConfiguration(locations = { "classpath:testContext.xml" })
 public class JdbcMovieDaoTest {
 
