@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext
+//@DirtiesContext
 @ContextConfiguration(locations = { "classpath:testContext.xml" })
 public class JdbcGenreDaoTest {
 
