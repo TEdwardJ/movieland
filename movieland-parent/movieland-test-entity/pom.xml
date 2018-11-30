@@ -18,6 +18,10 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 
@@ -27,6 +31,15 @@
             <artifactId>movieland-entity</artifactId>
             <version>${movieland.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.6.2</version>
+        </dependency>
     </dependencies>
-
 </project>
