@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext
 @ContextConfiguration(locations = { "classpath:testContext.xml" })
 public class JdbcMovieDaoTest {
 
@@ -35,7 +34,7 @@ public class JdbcMovieDaoTest {
     MovieDao jdbcMovieDao;
     @Before
     public void init(){
-        MockitoAnnotations.initMocks(this);
+       MockitoAnnotations.initMocks(this);
     }
 
     @Test

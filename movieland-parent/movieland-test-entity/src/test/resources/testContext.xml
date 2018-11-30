@@ -47,8 +47,4 @@
         <constructor-arg
                 value="SELECT m_id, m_title, m_title_en, m_price,m_release_year,m_description, m_rating, picture_url FROM movie.v_movie_genre_ui mg WHERE gnr_id = ?;"/>
     </bean>
-    <bean id="movieSelectByIdQuery" class="java.lang.String">
-        <constructor-arg
-                value="SELECT m_id, m_title, m_title_en, m_price,m_release_year,m_description, m_rating, picture_url FROM movie.v_movie_genre_ui mg WHERE m_id = ?;"/>
-    </bean>
 </beans>
