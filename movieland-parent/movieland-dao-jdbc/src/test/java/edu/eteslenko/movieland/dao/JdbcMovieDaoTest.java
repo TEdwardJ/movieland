@@ -7,6 +7,7 @@ import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.OrderType;
 import edu.eteslenko.movieland.entity.SortingColumn;
+import edu.eteslenko.movieland.entity.dto.MovieDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,6 +65,15 @@ public class JdbcMovieDaoTest {
         Mockito.when(jdbcTemplate.query(Matchers.anyString(), Matchers.any(RowMapper.class), Matchers.anyInt())).thenReturn(expectedMovies);
         List<Movie> actualMovies = jdbcMovieDao.getMoviesByGenre(2);
         Assert.assertEquals(2,actualMovies.size());
+    }
+
+    @Test
+    public void testGetMovieById() throws SQLException {
+        List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
+
+        Mockito.when(jdbcTemplate.query(Matchers.anyString(), Matchers.any(ResultSetExtractor.class), Matchers.anyInt())).thenReturn(expectedMovies.get(0));
+        Movie actualMovies = jdbcMovieDao.getById(2);
+        Assert.assertEquals(expectedMovies.get(0),actualMovies);
     }
 
     @Test

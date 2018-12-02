@@ -17,12 +17,23 @@ public class JdbcGenreDao implements GenreDao {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     private JdbcTemplate jdbcTemplate;
+
     private String genreSelectAllQuery;
+    private String genreSelectByMovieIdQuery;
 
     public List<Genre> getAll() {
         logger.debug("Getting all genres from DB");
         List<Genre> list =
                 jdbcTemplate.query(genreSelectAllQuery, ROW_MAPPER);
+
+        return list;
+    }
+
+    @Override
+    public List<Genre> getByMovieId(int id) {
+        logger.debug("Getting all genres for Movie {} from DB", id);
+        List<Genre> list =
+                jdbcTemplate.query(genreSelectByMovieIdQuery, ROW_MAPPER, id);
 
         return list;
     }
@@ -37,5 +48,9 @@ public class JdbcGenreDao implements GenreDao {
         this.genreSelectAllQuery = genreSelectAllQuery;
     }
 
+    @Autowired
+    public void setGenreSelectByMovieIdQuery(String genreSelectByMovieIdQuery) {
+        this.genreSelectByMovieIdQuery = genreSelectByMovieIdQuery;
+    }
 
 }

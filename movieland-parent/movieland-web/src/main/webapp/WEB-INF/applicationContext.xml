@@ -102,4 +102,20 @@
         <constructor-arg
                 value="${query.moviesByGenre}"/>
     </bean>
+    <bean id="movieSelectByIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.movieById}"/>
+    </bean>
+    <bean id="genreSelectByMovieIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.genreByMovieId}"/>
+    </bean>
+    <bean id="countrySelectAllQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.allCountries}"/>
+    </bean>
+    <bean id="countrySelectByMovieIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="${query.countryByMovieId}"/>
+    </bean>
 </beans>
