@@ -133,30 +133,31 @@ public class DefaultMovieService implements MovieService {
         taskList.add(enrichExecutor.submit(new EnrichTask("Review enriching", latch, () -> enrichMovie(movieId, reviewService::getMovieReviews, movie::setReviews))));
         try {
             latch.await(parallelServiceDelay, TimeUnit.SECONDS);
+            boolean totalResult = true;
+            for (Future future : taskList) {
+                if (future.isDone()) {
+                    try {
+                        boolean enrichResult = (boolean) future.get();
+                        if (!enrichResult) {
+                            totalResult = enrichResult;
+                        }
+                        logger.debug("Enricher returned value {}", enrichResult);
+                    } catch (InterruptedException e) {
+                        logger.debug("Enriching Service was interrupted {}", e);
+                    } catch (ExecutionException e) {
+                        logger.debug("Enricher execution threw exeption {}", e);
+                    }
+                } else {
+                    logger.debug("Enricher will be cancelled");
+                    future.cancel(true);
+                    totalResult = false;
+                }
+            }
+            logger.debug("Movie {} has been enriched {}", movieId, totalResult?"completely":"partially");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        boolean totalResult = true;
-        for (Future future : taskList) {
-            if (future.isDone()) {
-                try {
-                    boolean enrichResult = (boolean) future.get();
-                    if (!enrichResult) {
-                        totalResult = enrichResult;
-                    }
-                    logger.debug("Enricher returned value {}", enrichResult);
-                } catch (InterruptedException e) {
-                    logger.debug("Enriching Service was interrupted {}", e);
-                } catch (ExecutionException e) {
-                    logger.debug("Enricher execution threw exeption {}", e);
-                }
-            } else {
-                logger.debug("Enricher will be cancelled");
-                future.cancel(true);
-                totalResult = false;
-            }
-        }
-        logger.debug("Movie {} has been enriched {}", movieId, totalResult?"completely":"partially");
+
     }
 
     @Autowired
