@@ -1,6 +1,5 @@
 package edu.eteslenko.movieland.dao;
 
-import edu.eteslenko.movieland.entity.MovieReview;
 import edu.eteslenko.movieland.entity.User;
 import org.springframework.jdbc.core.RowMapper;
 

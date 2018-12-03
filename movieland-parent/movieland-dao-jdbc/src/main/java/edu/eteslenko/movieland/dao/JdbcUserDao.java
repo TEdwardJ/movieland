@@ -23,8 +23,8 @@ public class JdbcUserDao implements UserDao {
     public User getById(int id) {
         logger.debug("Getting user from DB by movie id {}", id);
         User user =
-                jdbcTemplate.query(userSelectByIdQuery,
-                                   t-> t.next()?ROW_MAPPER.mapRow(t,1):null,
+                jdbcTemplate.queryForObject(userSelectByIdQuery,
+                                   ROW_MAPPER,
                                    id);
         return user;
     }
