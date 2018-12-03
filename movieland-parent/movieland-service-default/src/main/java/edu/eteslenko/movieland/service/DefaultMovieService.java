@@ -41,9 +41,10 @@ public class DefaultMovieService implements MovieService {
         }
 
         @Override
-        public Boolean call() throws Exception {
+        public Boolean call() {
                 if (!Thread.currentThread().isInterrupted()) {
                     Boolean result = call.get();
+                    logger.debug("Enrichment task {} completed", description);
                     latch.countDown();
                     return result;
                 }
