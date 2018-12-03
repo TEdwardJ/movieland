@@ -60,12 +60,13 @@ public class DefaultMovieService implements MovieService {
     }
 
 
-    protected List<MovieDto> convertToDto(List<Movie> movieList){
+    protected List<MovieDto> convertToDto(List<Movie> movieList) {
         return movieList
                 .stream()
                 .map(MovieDto::new)
                 .collect(Collectors.toList());
     }
+
     @Autowired
     public DefaultMovieService(MovieDao movieDao) {
         this.movieDao = movieDao;
@@ -105,12 +106,12 @@ public class DefaultMovieService implements MovieService {
     @Override
     public MovieDto getById(int id) {
         Movie movie = movieDao.getById(id);
-        if (movie != null) {
-            MovieDto movieDto = new MovieDto(movie);
-            enrich(movieDto);
-            return movieDto;
+        if (movie == null) {
+            return null;
         }
-        return null;
+        MovieDto movieDto = new MovieDto(movie);
+        enrich(movieDto);
+        return movieDto;
     }
 
     private <T> boolean enrichMovie(Integer id, Function<Integer, T> service, Consumer<T> enricher) {
@@ -153,7 +154,7 @@ public class DefaultMovieService implements MovieService {
                     totalResult = false;
                 }
             }
-            logger.debug("Movie {} has been enriched {}", movieId, totalResult?"completely":"partially");
+            logger.debug("Movie {} has been enriched {}", movieId, totalResult ? "completely" : "partially");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

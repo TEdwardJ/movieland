@@ -49,7 +49,7 @@ public class MovieController {
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/v1/movie/genre/{id}")
     public List<MovieDto> getMovieByGenre(@PathVariable("id") int genre,
-                                       @RequestParam(required = false) HashMap<String, String> params) {
+                                          @RequestParam(required = false) HashMap<String, String> params) {
         MovieRequest movieRequest = getMovieQuery(params);
         logger.debug("MovieRequest is {}", movieRequest);
         return movieService.getMoviesByGenre(genre, movieRequest);
@@ -58,12 +58,8 @@ public class MovieController {
     @GetMapping(path = "/v1/movie/{movieId}")
     @JsonView(DetailedMovieView.class)
     public ResponseEntity<MovieDto> getMovieById(@PathVariable int movieId) {
-        MovieDto movie = movieService.getById(movieId);
-        if (movie != null) {
-            return new ResponseEntity<MovieDto>(movie, HttpStatus.OK);
-        }else{
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
-        }
+        Optional<MovieDto> movie = Optional.ofNullable(movieService.getById(movieId));
+        return new ResponseEntity<MovieDto>(movie.get(), movie.isPresent()?HttpStatus.OK:HttpStatus.NOT_FOUND);
     }
 
     @Autowired
