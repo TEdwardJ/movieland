@@ -71,7 +71,7 @@ public class JdbcMovieDaoTest {
     public void testGetMovieById() throws SQLException {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
 
-        Mockito.when(jdbcTemplate.query(Matchers.anyString(), Matchers.any(ResultSetExtractor.class), Matchers.anyInt())).thenReturn(expectedMovies.get(0));
+        Mockito.when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.any(RowMapper.class), Matchers.anyInt())).thenReturn(expectedMovies.get(0));
         Movie actualMovies = jdbcMovieDao.getById(2);
         Assert.assertEquals(expectedMovies.get(0),actualMovies);
     }

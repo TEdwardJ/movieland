@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -35,7 +35,7 @@ public class JdbcUserDaoTest {
     @Test
     public void getById() {
 
-        Mockito.when(jdbcTemplate.query(Matchers.anyString(), Matchers.any(ResultSetExtractor.class),anyInt())).thenReturn(testUser);
+        Mockito.when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.any(RowMapper.class), anyInt())).thenReturn(testUser);
         User actualUser = jdbcUserDao.getById(8);
         Assert.assertEquals(testUser,actualUser);
     }

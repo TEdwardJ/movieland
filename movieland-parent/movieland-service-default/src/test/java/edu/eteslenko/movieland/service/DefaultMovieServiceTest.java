@@ -91,21 +91,4 @@ public class DefaultMovieServiceTest {
         reset(jdbcMovieDao);
     }
 
-    @Test
-    public void testEnrich(){
-        Movie expectedMovie = new MovieLandTestDataGenerator().getMovies().get(0);
-        MovieDto testDto = new MovieDto(expectedMovie);
-        ((DefaultMovieService)movieService).enrich(testDto);
-        assertEquals(expectedMovie.getId(),testDto.getId());
-        assertEquals(expectedMovie.getDescription(),testDto.getDescription());
-        assertEquals(expectedMovie.getPicturePath(),testDto.getPicturePath());
-        assertEquals(expectedMovie.getPrice(),testDto.getPrice(),0);
-        assertEquals(expectedMovie.getTitle(),testDto.getTitle());
-        assertEquals(expectedMovie.getTitleInternational(),testDto.getTitleInternational());
-        assertEquals(expectedMovie.getReleaseYear(),testDto.getReleaseYear());
-        assertEquals(expectedMovie.getRating(),testDto.getRating(),0);
-        assertNotEquals(0,testDto.getGenres().size());
-        assertNotEquals(0,testDto.getCountries().size());
-        assertNotEquals(0,testDto.getReviews().size());
-    }
 }
