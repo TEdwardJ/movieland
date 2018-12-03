@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,10 +34,10 @@ public class DefaultMovieService implements MovieService {
 
     class EnrichTask implements Callable<Boolean> {
         private String description;
-        private Callable<Boolean> call;
+        private Supplier<Boolean> call;
         private CountDownLatch latch;
 
-        public EnrichTask(String description, CountDownLatch latch, Callable<Boolean> call) {
+        public EnrichTask(String description, CountDownLatch latch, Supplier<Boolean> call) {
             this.description = description;
             this.latch = latch;
             this.call = call;
@@ -44,17 +45,11 @@ public class DefaultMovieService implements MovieService {
 
         @Override
         public Boolean call() throws Exception {
-
-            try {
                 if (!Thread.currentThread().isInterrupted()) {
-                    Boolean result = call.call();
+                    Boolean result = call.get();
                     latch.countDown();
                     return result;
                 }
-            } catch (InterruptedException e) {
-                logger.debug("Enriching task '{}' was interrupted", description);
-                return false;
-            }
             return false;
         }
     }
