@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,5 +125,6 @@ public class JdbcMovieDao implements MovieDao {
     public void initMapping(){
         columnMapping.put("RATING","m_rating");
         columnMapping.put("PRICE","m_price");
+        columnMapping = Collections.unmodifiableMap(columnMapping);
     }
 }
