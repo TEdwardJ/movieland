@@ -15,7 +15,7 @@
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/jdbc
                            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
-    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:testApplication.properties" ignore-unresolvable="true"/>
     <context:component-scan base-package="edu.eteslenko.movieland.dao"/>
     <context:component-scan base-package="edu.eteslenko.movieland.service"/>
     <task:annotation-driven scheduler="myScheduler"/>
@@ -43,8 +43,25 @@
         <constructor-arg
                 value="SELECT gnr_id, gnr_name FROM movie.genre;"/>
     </bean>
+    <bean id="countrySelectAllQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT cntr_id, cntr_name FROM movie.country;"/>
+    </bean>
     <bean id="movieSelectByGenreQuery" class="java.lang.String">
         <constructor-arg
                 value="SELECT m_id, m_title, m_title_en, m_price,m_release_year,m_description, m_rating, picture_url FROM movie.v_movie_genre_ui mg WHERE gnr_id = ?;"/>
     </bean>
+    <bean id="movieSelectByIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT m_id, m_title, m_title_en, m_price, m_release_year, m_description, m_rating, picture_url FROM movie.v_movie_ui mg WHERE m_id = ?;"/>
+    </bean>
+    <bean id="genreSelectByMovieIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT gnr_id, gnr_name FROM movie.v_all_movie_genres_ui mg WHERE mg.m_id = ?;"/>
+    </bean>
+    <bean id="countrySelectByMovieIdQuery" class="java.lang.String">
+        <constructor-arg
+                value="SELECT cntr_id, cntr_name FROM movie.v_all_movie_countries_ui mc WHERE mc.m_id = ?;"/>
+    </bean>
+
 </beans>

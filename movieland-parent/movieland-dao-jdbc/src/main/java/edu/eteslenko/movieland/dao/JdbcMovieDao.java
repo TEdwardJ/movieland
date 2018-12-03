@@ -5,10 +5,15 @@ import edu.eteslenko.movieland.entity.MovieRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +30,8 @@ public class JdbcMovieDao implements MovieDao {
     private String movieSelectAllQuery;
     private String movieSelectThreeRandomQuery;
     private String movieSelectByGenreQuery;
+
+    private String movieSelectByIdQuery;
 
     public List<Movie> getAll() {
         return getAll(MovieRequest.DEFAULT);
@@ -79,6 +86,16 @@ public class JdbcMovieDao implements MovieDao {
         return list;
     }
 
+    @Override
+    public Movie getById(int id) {
+        logger.debug("Getting for movies from DB by movie id {}", id);
+        Movie movie =
+                jdbcTemplate.query(movieSelectByIdQuery,
+                                   t-> t.next()?ROW_MAPPER.mapRow(t,1):null,
+                                   new Integer(id));
+        return movie;
+    }
+
     @Autowired
     public void setMovieSelectThreeRandomQuery(String movieSelectThreeRandomQuery) {
         this.movieSelectThreeRandomQuery = movieSelectThreeRandomQuery;
@@ -90,18 +107,24 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Autowired
+    public void setMovieSelectAllQuery(String movieSelectAllQuery) {
+        this.movieSelectAllQuery = movieSelectAllQuery;
+    }
+
+    @Autowired
+    public void setMovieSelectByIdQuery(String movieSelectByIdQuery) {
+        this.movieSelectByIdQuery = movieSelectByIdQuery;
+    }
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Autowired
-    public void setMovieSelectAllQuery(String movieSelectAllQuery) {
-        this.movieSelectAllQuery = movieSelectAllQuery;
-    }
 
     @PostConstruct
     public void initMapping(){
         columnMapping.put("RATING","m_rating");
         columnMapping.put("PRICE","m_price");
+        columnMapping = Collections.unmodifiableMap(columnMapping);
     }
 }

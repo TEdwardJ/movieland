@@ -10,5 +10,7 @@ public interface GenreService {
 
     List<Genre> getAllGenres();
 
+    List<Genre> getGenresByMovieId(int id);
+
 
 }

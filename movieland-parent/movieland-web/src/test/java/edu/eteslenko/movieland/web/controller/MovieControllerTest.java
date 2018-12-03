@@ -3,6 +3,8 @@ package edu.eteslenko.movieland.web.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.eteslenko.movieland.entity.*;
+import edu.eteslenko.movieland.entity.dto.MovieDto;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,15 +22,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,18 +60,18 @@ public class MovieControllerTest {
 
     @Test
     public void testGetMovieByGenre() throws Exception {
-        List<Movie> listMovie1 = performMovieRequest("/v1/movie/genre/2", 2);
-        List<Movie> listMovie2 = performMovieRequest("/v1/movie/genre/2", 2);
+        List<MovieDto> listMovie1 = performMovieRequest("/v1/movie/genre/2", 3);
+        List<MovieDto> listMovie2 = performMovieRequest("/v1/movie/genre/2", 3);
         assertEquals(listMovie1, listMovie2);
-        assertEquals(2, listMovie1.size());
-        assertEquals(2, listMovie2.size());
+        assertEquals(3, listMovie1.size());
+        assertEquals(3, listMovie2.size());
 
-        List<Movie> listMovie3 = performMovieRequest("/v1/movie/genre/3", 1);
-        List<Movie> listMovie4 = performMovieRequest("/v1/movie/genre/4", 1);
-        assertEquals(1, listMovie3.size());
+        List<MovieDto> listMovie3 = performMovieRequest("/v1/movie/genre/3", 2);
+        List<MovieDto> listMovie4 = performMovieRequest("/v1/movie/genre/4", 1);
+        assertEquals(2, listMovie3.size());
         assertEquals(1, listMovie4.size());
 
-        List<Movie> listMovie5 = performMovieRequest("/v1/movie/genre/111", 0);
+        List<MovieDto> listMovie5 = performMovieRequest("/v1/movie/genre/111", 0);
         assertEquals(0, listMovie5.size());
     }
 
@@ -88,8 +87,8 @@ public class MovieControllerTest {
 
     @Test
     public void testGetAllMovies() throws Exception {
-        List<Movie> listMovie1 = performMovieRequest("/v1/movies", 5);
-        List<Movie> listMovie2 = performMovieRequest("/v1/movies", 5);
+        List<MovieDto> listMovie1 = performMovieRequest("/v1/movies", 5);
+        List<MovieDto> listMovie2 = performMovieRequest("/v1/movies", 5);
         assertEquals(listMovie1, listMovie2);
         assertEquals(5, listMovie1.size());
         assertEquals(5, listMovie2.size());
@@ -97,18 +96,18 @@ public class MovieControllerTest {
 
     @Test
     public void testGetAllMoviesWithSorting() throws Exception {
-        List<Movie> listMovie1 = performMovieRequest("/v1/movies?rating=desc", 5);
+        List<MovieDto> listMovie1 = performMovieRequest("/v1/movies?rating=desc", 5);
         assertEquals(5, listMovie1.size());
         assertEquals(8.9, listMovie1.get(0).getRating(),0);
-        List<Movie> listMovie2 = performMovieRequest("/v1/movies?rating=asc", 5);
+        List<MovieDto> listMovie2 = performMovieRequest("/v1/movies?rating=asc", 5);
         assertEquals(8.9, listMovie2.get(0).getRating(),0);
     }
 
     @Test
     public void testGetTreeRandom() throws Exception {
 
-        List<Movie> listMovie1 = performMovieRequest("/v1/movie/random", 3);
-        List<Movie> listMovie2 = performMovieRequest("/v1/movie/random", 3);
+        List<MovieDto> listMovie1 = performMovieRequest("/v1/movie/random", 3);
+        List<MovieDto> listMovie2 = performMovieRequest("/v1/movie/random", 3);
 
         assertNotEquals(listMovie2, listMovie1);
     }
@@ -126,7 +125,7 @@ public class MovieControllerTest {
         });
     }
 
-    private List<Movie> performMovieRequest(String s, int i) throws Exception {
+    private List<MovieDto> performMovieRequest(String s, int i) throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
 
         ResultActions result = mockMvc.perform(request);
@@ -135,20 +134,42 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$", hasSize(i)));
         MvcResult mvcResult = result.andReturn();
         String jsonMovieArray = mvcResult.getResponse().getContentAsString();
-        return jsonMapper.readValue(jsonMovieArray, new TypeReference<List<Movie>>() {
+        return jsonMapper.readValue(jsonMovieArray, new TypeReference<List<MovieDto>>() {
         });
     }
 
+    private void performMovieDtoRequest(String s, int i) throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(s);
 
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", equalTo(i)))
+                .andExpect(jsonPath("$.genres", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.countries", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.reviews", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.description", not(empty())))
+                .andExpect(jsonPath("$.nameRussian", not(empty())))
+                .andExpect(jsonPath("$.nameNative", not(empty())))
+                .andExpect(jsonPath("$.yearOfRelease", not(empty())))
+        ;
+        MvcResult mvcResult = result.andReturn();
+        String jsonMovieArray = mvcResult.getResponse().getContentAsString();
 
+    }
 
     @Test
     public void testGetMoviesByGenreWithSorting() throws Exception {
-        List<Movie> listMovie1 = performMovieRequest("/v1/movie/genre/2?rating=desc", 2);
-        assertEquals(2, listMovie1.size());
+        List<MovieDto> listMovie1 = performMovieRequest("/v1/movie/genre/2?rating=desc", 3);
+        assertEquals(3, listMovie1.size());
         assertEquals(8.9, listMovie1.get(0).getRating(),0);
-        List<Movie> listMovie2 = performMovieRequest("/v1/movie/genre/2?price=desc", 2);
-        assertEquals(134.67, listMovie2.get(0).getPrice(),0);
+        List<MovieDto> listMovie2 = performMovieRequest("/v1/movie/genre/2?price=desc", 3);
+        assertEquals(145.9, listMovie2.get(0).getPrice(),0);
+    }
 
+    @Test
+    public void testGetMovieById() throws Exception {
+        performMovieDtoRequest("/v1/movie/1", 1);
+        performMovieDtoRequest("/v1/movie/2", 2);
     }
 }

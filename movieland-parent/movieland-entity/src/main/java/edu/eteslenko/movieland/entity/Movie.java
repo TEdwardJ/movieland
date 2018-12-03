@@ -4,35 +4,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.eteslenko.movieland.web.view.AllMoviesView;
+import edu.eteslenko.movieland.web.view.DetailedMovieView;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Movie {
 
-    @JsonView(AllMoviesView.class)
     private int id;
-    @JsonProperty("nameRussian")
-    @JsonView(AllMoviesView.class)
+
     private String title;
-    @JsonProperty("nameNative")
-    @JsonView(AllMoviesView.class)
+
     private String titleInternational;
 
-    @JsonView(AllMoviesView.class)
-    @JsonProperty("yearOfRelease")
     private int releaseYear;
-    @JsonIgnore
+
     private String description;
-    @JsonView(AllMoviesView.class)
+
     private double rating;
-    @JsonView(AllMoviesView.class)
+
     private double price;
-    @JsonView(AllMoviesView.class)
-    @JsonProperty("picturePath")
+
     private String picturePath;
 
-    public String getTitleInternational() {
+     public String getTitleInternational() {
         return titleInternational;
     }
 

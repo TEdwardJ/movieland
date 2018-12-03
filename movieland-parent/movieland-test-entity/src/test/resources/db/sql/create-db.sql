@@ -26,11 +26,53 @@ CREATE TABLE movie.genre
     CONSTRAINT genre_uk UNIQUE (gnr_name)
 );
 
+CREATE TABLE movie.country
+(
+    cntr_id numeric NOT NULL,
+    cntr_name character varying(64) NOT NULL,
+CONSTRAINT country_pk PRIMARY KEY (cntr_id)
+);
+
+CREATE TABLE movie.movie_country
+(
+    m_id numeric NOT NULL,
+    cntr_id numeric NOT NULL,
+    CONSTRAINT MOVIE_COUNTRY_PK PRIMARY KEY (m_id, cntr_id),
+    CONSTRAINT COUNTRY_ID_FK FOREIGN KEY (cntr_id)
+    REFERENCES movie.country (cntr_id),
+CONSTRAINT MOVIE_ID_FK FOREIGN KEY (m_id)
+REFERENCES movie.movie (m_id)
+);
+
 CREATE TABLE movie_genre
 (
     gnr_id numeric NOT NULL,
     m_id numeric NOT NULL,
     CONSTRAINT movie_genre_pk PRIMARY KEY (gnr_id, m_id)
+);
+
+CREATE TABLE movie.user
+(
+    usr_id numeric NOT NULL,
+    usr_name character varying(32) NOT NULL,
+    usr_email character varying(32),
+    usr_password character(128) NOT NULL,
+    usr_sole character varying(32),
+    CONSTRAINT user_pkey PRIMARY KEY (usr_id)
+);
+
+CREATE TABLE movie.movie_review
+(
+    review_id numeric NOT NULL,
+    usr_id numeric NOT NULL,
+    message text NOT NULL,
+    m_id numeric NOT NULL,
+    review_date date NOT NULL DEFAULT CURRENT_DATE,
+CONSTRAINT REVIEW_PK PRIMARY KEY (review_id),
+CONSTRAINT M_ID_FK FOREIGN KEY (m_id)
+REFERENCES movie.movie (m_id),
+CONSTRAINT USR_ID_FK FOREIGN KEY (usr_id)
+REFERENCES movie.user (usr_id)
 );
 
 CREATE OR REPLACE VIEW v_movie_ui AS

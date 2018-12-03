@@ -1,5 +1,6 @@
 package edu.eteslenko.movieland;
 
+import edu.eteslenko.movieland.entity.Country;
 import edu.eteslenko.movieland.entity.Genre;
 import edu.eteslenko.movieland.entity.Movie;
 
@@ -75,5 +76,12 @@ public class MovieLandTestDataGenerator{
         movieList.add(movie3);
         return movieList;
 
+    }
+
+    public List<Country> getCountries(){
+        List<Country> countryList = new ArrayList<>();
+        countryList.add(new Country(1,"США"));
+        countryList.add(new Country(2,"Великобритания"));
+        return countryList;
     }
 }

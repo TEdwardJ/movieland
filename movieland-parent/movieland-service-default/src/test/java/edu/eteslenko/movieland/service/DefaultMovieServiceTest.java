@@ -4,6 +4,7 @@ import edu.eteslenko.movieland.MovieLandTestDataGenerator;
 import edu.eteslenko.movieland.dao.MovieDao;
 import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
+import edu.eteslenko.movieland.entity.dto.MovieDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.reset;
@@ -40,23 +42,30 @@ public class DefaultMovieServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    protected List<MovieDto> convertToDto(List<Movie> movieList){
+        return movieList
+                .stream()
+                .map(MovieDto::new)
+                .collect(Collectors.toList());
+    }
+
     @Test
     public void testGetAllMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
         when(jdbcMovieDao.getAll(any(MovieRequest.class))).thenReturn(expectedMovies);
 
-        List<Movie> actualMovies = movieService.getAllMovies();
+        List<MovieDto> actualMovies = movieService.getAllMovies();
 
-        assertEquals(expectedMovies,actualMovies);
+        assertEquals(expectedMovies.stream().map(MovieDto::new).collect(Collectors.toList()), actualMovies);
         reset(jdbcMovieDao);
     }
 
     @Test
-    public void testGet3RandomMovies() {
+    public void testGetThreeRandomMovies() {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMoviesForRandomTest();
         when(jdbcMovieDao.getThreeRandom()).thenReturn(expectedMovies.subList(0,3));
 
-        List<Movie> actualMovies = movieService.getThreeRandomMovies();
+        List<MovieDto> actualMovies = movieService.getThreeRandomMovies();
 
         assertEquals(3,actualMovies.size());
     }
@@ -66,9 +75,37 @@ public class DefaultMovieServiceTest {
         List<Movie> expectedMovies = new MovieLandTestDataGenerator().getMovies();
         when(jdbcMovieDao.getMoviesByGenre(anyInt(),any(MovieRequest.class))).thenReturn(expectedMovies);
 
-        List<Movie> actualMovies = movieService.getMoviesByGenre(2);
+        List<MovieDto> actualMovies = movieService.getMoviesByGenre(2);
 
-        assertEquals(expectedMovies,actualMovies);
+        assertEquals(convertToDto(expectedMovies), actualMovies);
         reset(jdbcMovieDao);
+    }
+
+    @Test
+    public void testGetById() {
+        Movie expectedMovie = new MovieLandTestDataGenerator().getMovies().get(0);
+        when(jdbcMovieDao.getById(anyInt())).thenReturn(expectedMovie);
+
+        MovieDto actualMovie = movieService.getById(2);
+        assertEquals(new MovieDto(expectedMovie),actualMovie);
+        reset(jdbcMovieDao);
+    }
+
+    @Test
+    public void testEnrich(){
+        Movie expectedMovie = new MovieLandTestDataGenerator().getMovies().get(0);
+        MovieDto testDto = new MovieDto(expectedMovie);
+        ((DefaultMovieService)movieService).enrich(testDto);
+        assertEquals(expectedMovie.getId(),testDto.getId());
+        assertEquals(expectedMovie.getDescription(),testDto.getDescription());
+        assertEquals(expectedMovie.getPicturePath(),testDto.getPicturePath());
+        assertEquals(expectedMovie.getPrice(),testDto.getPrice(),0);
+        assertEquals(expectedMovie.getTitle(),testDto.getTitle());
+        assertEquals(expectedMovie.getTitleInternational(),testDto.getTitleInternational());
+        assertEquals(expectedMovie.getReleaseYear(),testDto.getReleaseYear());
+        assertEquals(expectedMovie.getRating(),testDto.getRating(),0);
+        assertNotEquals(0,testDto.getGenres().size());
+        assertNotEquals(0,testDto.getCountries().size());
+        assertNotEquals(0,testDto.getReviews().size());
     }
 }
