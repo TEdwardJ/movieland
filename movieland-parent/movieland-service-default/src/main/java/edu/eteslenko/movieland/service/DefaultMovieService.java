@@ -21,16 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultMovieService implements MovieService {
 
-    @Value("${movie.parallelServiceDelay}")
-    private Integer parallelServiceDelay;
     private Logger logger = LoggerFactory.getLogger(getClass());
     private MovieDao movieDao;
     private GenreService genreService;
     private CountryService countryService;
     private ReviewService reviewService;
-
-
     private ExecutorService enrichExecutor = Executors.newCachedThreadPool();
+    private Integer parallelServiceDelay;
 
     class EnrichTask implements Callable<Boolean> {
         private String description;
@@ -61,6 +58,8 @@ public class DefaultMovieService implements MovieService {
                 .map(MovieDto::new)
                 .collect(Collectors.toList());
     }
+
+
 
     @Autowired
     public DefaultMovieService(MovieDao movieDao) {
@@ -169,5 +168,9 @@ public class DefaultMovieService implements MovieService {
     @Autowired
     public void setReviewService(ReviewService reviewService) {
         this.reviewService = reviewService;
+    }
+    @Value("${movie.parallelServiceDelay}")
+    public void setParallelServiceDelay(Integer parallelServiceDelay) {
+        this.parallelServiceDelay = parallelServiceDelay;
     }
 }
