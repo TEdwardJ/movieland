@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class MovieController {
     private GenreService genreService;
 
     @JsonView(AllMoviesView.class)
-    @GetMapping(path = "/v1/movies")
+    @GetMapping(path = "/movies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getAllMovies(@RequestParam(required = false) HashMap<String, String> params) {
         MovieRequest movieRequest = getMovieQuery(params);
         logger.debug("MovieRequest is {}", movieRequest);
@@ -34,20 +35,16 @@ public class MovieController {
     }
 
     @JsonView(AllMoviesView.class)
-    @GetMapping(path = "/v1/movie/random")
+    @GetMapping(path = "/movie/random", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getThreeRandomMovies(@RequestParam(required = false) HashMap<String, String> params) {
         MovieRequest movieRequest = getMovieQuery(params);
         logger.debug("MovieRequest is {}", movieRequest);
         return movieService.getThreeRandomMovies(movieRequest);
     }
 
-    @GetMapping(path = "/v1/genre")
-    public List<Genre> getAllGenres() {
-        return genreService.getAllGenres();
-    }
 
     @JsonView(AllMoviesView.class)
-    @GetMapping(path = "/v1/movie/genre/{id}")
+    @GetMapping(path = "/movie/genre/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getMovieByGenre(@PathVariable("id") int genre,
                                           @RequestParam(required = false) HashMap<String, String> params) {
         MovieRequest movieRequest = getMovieQuery(params);
@@ -55,7 +52,7 @@ public class MovieController {
         return movieService.getMoviesByGenre(genre, movieRequest);
     }
 
-    @GetMapping(path = "/v1/movie/{movieId}")
+    @GetMapping(path = "/movie/{movieId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @JsonView(DetailedMovieView.class)
     public ResponseEntity<MovieDto> getMovieById(@PathVariable int movieId) {
         Optional<MovieDto> movie = Optional.ofNullable(movieService.getById(movieId));
