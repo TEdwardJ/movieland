@@ -8,9 +8,13 @@ import java.util.function.Function;
 public abstract class AbstractEnrichService {
     abstract void enrich(MovieDto movie);
 
-    protected <T> boolean enrichMovie(Integer id, Function<Integer, T> service, Consumer<T> enricher) {
+    protected <T> boolean enrichMovie(Integer id, Function<Integer, T> service, Consumer<T> setter) {
         T data = service.apply(id);
-        enricher.accept(data);
-        return true;
+        if (!Thread.currentThread().isInterrupted()) {
+            setter.accept(data);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
