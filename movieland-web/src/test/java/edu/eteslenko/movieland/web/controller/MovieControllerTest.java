@@ -7,6 +7,7 @@ import edu.eteslenko.movieland.entity.dto.MovieDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,7 +26,9 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.notNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -127,7 +130,12 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$.id", equalTo(i)))
                 .andExpect(jsonPath("$.genres", hasSize(greaterThan(0))))
                 .andExpect(jsonPath("$.countries", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.countries[0].id", notNullValue()))
+                .andExpect(jsonPath("$.countries[0].name", notNullValue()))
                 .andExpect(jsonPath("$.reviews", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$.reviews[0].text", notNullValue()))
+                .andExpect(jsonPath("$.reviews[0].user.id", notNullValue()))
+                .andExpect(jsonPath("$.reviews[0].user.nickname",notNullValue()))
                 .andExpect(jsonPath("$.description", not(empty())))
                 .andExpect(jsonPath("$.nameRussian", not(empty())))
                 .andExpect(jsonPath("$.nameNative", not(empty())))
