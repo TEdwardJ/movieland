@@ -2,6 +2,8 @@ package edu.eteslenko.movieland.dao;
 
 import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
+import edu.eteslenko.movieland.entity.RequestCurrency;
+import edu.eteslenko.movieland.entity.SortingColumn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class JdbcMovieDao implements MovieDao {
     private String movieSelectByIdQuery;
 
     public List<Movie> getAll() {
-        return getAll(MovieRequest.DEFAULT);
+        return getAll(MovieRequest.getDefaultRequest());
     }
 
     public List<Movie> getAll(MovieRequest movieRequest) {
@@ -43,18 +45,23 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     protected String prepareQuery(String initialQuery, MovieRequest movieRequest) {
-        if (movieRequest == MovieRequest.DEFAULT){
+        if (movieRequest == MovieRequest.getDefaultRequest()) {
             return initialQuery;
         }
-        logger.debug("MovieRequest is not default, so preparing query is needed");
-        return new StringBuilder(initialQuery.replace(";"," ORDER BY "))
-                .append(" ")
-                .append(columnMapping.get(movieRequest.getSortingColumn().name()))
-                .append(" ")
-                .append(movieRequest.getOrderType().name())
-                .append(";")
-                .toString();
+        if (movieRequest.getSortingColumn() != SortingColumn.DEFAULT) {
+            StringBuilder query = new StringBuilder();
+            logger.debug("MovieRequest is not default, so preparing query is needed");
+            query.append(initialQuery.replace(";", " ORDER BY "))
+                    .append(" ")
+                    .append(columnMapping.get(movieRequest.getSortingColumn().name()))
+                    .append(" ")
+                    .append(movieRequest.getOrderType().name())
+                    .append(";");
+            return query.toString();
+        }
+        return initialQuery;
     }
+
 
     @Override
     public List<Movie> getThreeRandom(MovieRequest movieRequest) {
@@ -66,16 +73,16 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     public List<Movie> getThreeRandom() {
-        return getThreeRandom(MovieRequest.DEFAULT);
+        return getThreeRandom(MovieRequest.getDefaultRequest());
     }
 
     public List<Movie> getMoviesByGenre(int genre) {
-        return getMoviesByGenre(genre, MovieRequest.DEFAULT);
+        return getMoviesByGenre(genre, MovieRequest.getDefaultRequest());
     }
 
     @Override
     public List<Movie> getMoviesByGenre(int genre, MovieRequest movieRequest) {
-        logger.debug("Getting for movies from DB by genre {}",genre);
+        logger.debug("Getting for movies from DB by genre {}", genre);
         String actualQuery = prepareQuery(movieSelectByGenreQuery, movieRequest);
         List<Movie> list =
                 jdbcTemplate.query(actualQuery, ROW_MAPPER, genre);
@@ -87,8 +94,8 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Getting for movies from DB by movie id {}", id);
         Movie movie =
                 jdbcTemplate.queryForObject(movieSelectByIdQuery,
-                                   ROW_MAPPER,
-                                   id);
+                        ROW_MAPPER,
+                        id);
         return movie;
     }
 
@@ -111,6 +118,7 @@ public class JdbcMovieDao implements MovieDao {
     public void setMovieSelectByIdQuery(String movieSelectByIdQuery) {
         this.movieSelectByIdQuery = movieSelectByIdQuery;
     }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -118,9 +126,9 @@ public class JdbcMovieDao implements MovieDao {
 
 
     @PostConstruct
-    public void initMapping(){
-        columnMapping.put("RATING","m_rating");
-        columnMapping.put("PRICE","m_price");
+    public void initMapping() {
+        columnMapping.put("RATING", "m_rating");
+        columnMapping.put("PRICE", "m_price");
         columnMapping = Collections.unmodifiableMap(columnMapping);
     }
 }

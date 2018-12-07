@@ -3,6 +3,7 @@ package edu.eteslenko.movieland.service;
 import edu.eteslenko.movieland.dao.MovieDao;
 import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
+import edu.eteslenko.movieland.entity.RequestCurrency;
 import edu.eteslenko.movieland.entity.dto.MovieDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,14 @@ public class DefaultMovieService implements MovieService {
 
 
     protected List<MovieDto> convertToDto(List<Movie> movieList) {
+        return convertToDto(movieList, RequestCurrency.UAH);
+    }
+
+    protected List<MovieDto> convertToDto(List<Movie> movieList, RequestCurrency currency) {
         return movieList
                 .stream()
                 .map(MovieDto::new)
+                .peek(t->t.setPrice(t.getPrice()/currency.getRate()))
                 .collect(Collectors.toList());
     }
 
@@ -36,32 +42,32 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public List<MovieDto> getAllMovies(MovieRequest movieRequest) {
-        return convertToDto(movieDao.getAll(movieRequest));
+        return convertToDto(movieDao.getAll(movieRequest), movieRequest.getCurrency());
     }
 
     @Override
     public List<MovieDto> getAllMovies() {
-        return getAllMovies(MovieRequest.DEFAULT);
+        return getAllMovies(MovieRequest.getDefaultRequest());
     }
 
     @Override
     public List<MovieDto> getThreeRandomMovies(MovieRequest movieRequest) {
-        return convertToDto(movieDao.getThreeRandom());
+        return convertToDto(movieDao.getThreeRandom(), movieRequest.getCurrency());
     }
 
     @Override
     public List<MovieDto> getThreeRandomMovies() {
-        return getThreeRandomMovies(MovieRequest.DEFAULT);
+        return getThreeRandomMovies(MovieRequest.getDefaultRequest());
     }
 
     @Override
     public List<MovieDto> getMoviesByGenre(int genre) {
-        return getMoviesByGenre(genre, MovieRequest.DEFAULT);
+        return getMoviesByGenre(genre, MovieRequest.getDefaultRequest());
     }
 
     @Override
     public List<MovieDto> getMoviesByGenre(int genre, MovieRequest movieRequest) {
-        return convertToDto(movieDao.getMoviesByGenre(genre, movieRequest));
+        return convertToDto(movieDao.getMoviesByGenre(genre, movieRequest), movieRequest.getCurrency());
     }
 
     @Override

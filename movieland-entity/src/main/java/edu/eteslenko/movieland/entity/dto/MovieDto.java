@@ -86,6 +86,10 @@ public class MovieDto {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public int getReleaseYear() {
         return releaseYear;
     }

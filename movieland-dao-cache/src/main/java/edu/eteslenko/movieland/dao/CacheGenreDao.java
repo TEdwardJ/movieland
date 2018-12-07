@@ -35,7 +35,7 @@ public class CacheGenreDao implements GenreDao {
         return genreDao.getByMovieId(id);
     }
 
-    @Scheduled(fixedRateString = "${app.cacheRefreshPeriod}", initialDelayString = "${app.cacheRefreshPeriod}")
+    @Scheduled(fixedRateString = "${app.genreCacheRefreshPeriod}", initialDelayString = "${app.genreCacheRefreshPeriod}")
     @PostConstruct
     protected void refresh() {
         logger.debug("Going to update cache collection link");

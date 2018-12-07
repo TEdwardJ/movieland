@@ -76,7 +76,7 @@ public class JdbcMovieDaoTest {
     @Test
     public void testPrepareQuery(){
         String sql = "SELECT * FROM MOVIE m;";
-        String newSql1 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,MovieRequest.DEFAULT);
+        String newSql1 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,MovieRequest.getDefaultRequest());
         assertEquals(newSql1, sql);
         String newSql2 = ((JdbcMovieDao)jdbcMovieDao).prepareQuery(sql,new MovieRequest(SortingColumn.PRICE, OrderType.ASC));
         assertNotEquals(newSql2, sql);
