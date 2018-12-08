@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 @JsonIgnoreProperties
@@ -19,6 +18,16 @@ public class Currency {
     private String shortName;
     @JsonProperty("exchangedate")
     private Date exchangeDate;
+
+    public Currency() {
+    }
+
+    public Currency(int isoCode, double rate, String shortName) {
+        this.isoCode = isoCode;
+        this.rate = rate;
+        this.shortName = shortName;
+    }
+
     @JsonIgnore
     public int getIsoCode() {
         return isoCode;

@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
         "file:src/main/webapp/WEB-INF/MovieDispatcher-servlet.xml",
-        "classpath:testContext.xml"})
+        "classpath:testContextWeb.xml"})
 @WebAppConfiguration
 public class GenreControllerTest {
 

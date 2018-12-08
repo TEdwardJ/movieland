@@ -1,6 +1,7 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.dao.MovieDao;
+import edu.eteslenko.movieland.entity.Currency;
 import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.RequestCurrency;
@@ -18,19 +19,20 @@ public class DefaultMovieService implements MovieService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private MovieDao movieDao;
+    private CurrencyService currencyService;
 
     private AbstractEnrichService enrichService;
-
 
     protected List<MovieDto> convertToDto(List<Movie> movieList) {
         return convertToDto(movieList, RequestCurrency.UAH);
     }
 
     protected List<MovieDto> convertToDto(List<Movie> movieList, RequestCurrency currency) {
+        Currency currentCurrency = currencyService.getByCode(currency.name());
         return movieList
                 .stream()
                 .map(MovieDto::new)
-                .peek(t->t.setPrice(t.getPrice()/currency.getRate()))
+                .peek(t->t.setPrice(t.getPrice()/currentCurrency.getRate()))
                 .collect(Collectors.toList());
     }
 
@@ -88,5 +90,10 @@ public class DefaultMovieService implements MovieService {
     @Autowired
     public void setEnrichService(AbstractEnrichService enrichService) {
         this.enrichService = enrichService;
+    }
+
+    @Autowired
+    public void setCurrencyService(CurrencyService currencyService) {
+        this.currencyService = currencyService;
     }
 }

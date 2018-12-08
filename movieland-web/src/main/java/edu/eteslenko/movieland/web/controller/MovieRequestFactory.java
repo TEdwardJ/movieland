@@ -4,13 +4,14 @@ import edu.eteslenko.movieland.entity.*;
 import edu.eteslenko.movieland.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
 
-@Component
+@Service
 public class MovieRequestFactory {
 
     private CurrencyService currencyService;
@@ -19,10 +20,9 @@ public class MovieRequestFactory {
         MovieRequest request = MovieRequest.getDefaultRequest();
         if (requestParams.containsKey("currency")) {
             RequestCurrency currency = Arrays.stream(RequestCurrency.values())
-                    .filter(t -> requestParams.get("currency").equalsIgnoreCase(t.name().toLowerCase()))
+                    .filter(t -> requestParams.get("currency").equalsIgnoreCase(t.name()))
                     .findFirst()
                     .orElseGet(() -> RequestCurrency.UAH);
-            currency.setRate(currencyService.getByCode(currency.name()).getRate());
             request.setCurrency(currency);
         }
         SortingColumn sortingColumn = Arrays.stream(SortingColumn.values())
