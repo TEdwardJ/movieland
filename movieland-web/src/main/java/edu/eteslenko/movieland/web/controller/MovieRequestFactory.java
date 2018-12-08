@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
-
 @Service
 public class MovieRequestFactory {
 
@@ -33,11 +32,9 @@ public class MovieRequestFactory {
         if (sortingColumn != SortingColumn.DEFAULT) {
             request.setSortingColumn(sortingColumn);
 
-            OrderType orderType = OrderType.DEFAULT;
+            OrderType orderType = OrderType.DESC;
 
-            if (sortingColumn == SortingColumn.RATING) {
-                orderType = OrderType.DESC;
-            } else {
+            if (sortingColumn != SortingColumn.RATING) {
                 orderType = Arrays.stream(OrderType.values())
                         .filter(t -> requestParams.get(sortingColumn.name().toLowerCase()).equalsIgnoreCase(t.name()))
                         .findFirst()
