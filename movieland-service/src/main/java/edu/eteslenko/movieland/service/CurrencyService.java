@@ -8,9 +8,7 @@ import java.util.List;
 public interface CurrencyService {
 
 
-    Currency getByCode(String code);
-
-    List<Currency> getAll();
+    double getRate(String code);
 
 
 }

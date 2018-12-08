@@ -28,11 +28,11 @@ public class DefaultMovieService implements MovieService {
     }
 
     protected List<MovieDto> convertToDto(List<Movie> movieList, RequestCurrency currency) {
-        Currency currentCurrency = currencyService.getByCode(currency.name());
+        double currentRate = currencyService.getRate(currency.name());
         return movieList
                 .stream()
                 .map(MovieDto::new)
-                .peek(t->t.setPrice(t.getPrice()/currentCurrency.getRate()))
+                .peek(t->t.setPrice(t.getPrice()/currentRate))
                 .collect(Collectors.toList());
     }
 

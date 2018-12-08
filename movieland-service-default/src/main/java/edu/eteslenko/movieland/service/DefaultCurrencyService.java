@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultCurrencyService implements CurrencyService {
 
-    private static final Currency UAH = new Currency(980,1,"UAH");
+    private  String defaultCurrency;
 
     private RestTemplate restTemplate;
 
@@ -29,11 +29,11 @@ public class DefaultCurrencyService implements CurrencyService {
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
 
     @Override
-    public Currency getByCode(String code) {
-        if("UAH".equalsIgnoreCase(code)){
-            return UAH;
+    public double getRate(String code) {
+        if(defaultCurrency.equalsIgnoreCase(code)){
+            return 1;
         }
-        return currencyMap.get(code);
+        return currencyMap.get(code).getRate();
     }
 
     /*
@@ -52,12 +52,8 @@ public class DefaultCurrencyService implements CurrencyService {
                 null,
                 new ParameterizedTypeReference<List<Currency>>(){});
         List<Currency> currencies = response.getBody();
-
-        this.currencyMap = currencies.stream().collect(Collectors.toMap(t->t.getShortName(),t->t));
-    }
-    @Override
-    public List<Currency> getAll() {
-        return new ArrayList<>(currencyMap.values());
+        Map<String, Currency> temp = currencies.stream().collect(Collectors.toMap(t->t.getShortName(),t->t));
+        this.currencyMap = temp;
     }
 
     @Value("${currency.ratesUrl}")
@@ -68,5 +64,11 @@ public class DefaultCurrencyService implements CurrencyService {
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+
+    @Value("${movie.defaultCurrency}")
+    public void setDefaultCurrency(String defaultCurrency) {
+        this.defaultCurrency = defaultCurrency;
     }
 }

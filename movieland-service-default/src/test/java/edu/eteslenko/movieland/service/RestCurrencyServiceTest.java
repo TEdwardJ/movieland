@@ -6,10 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,8 +21,10 @@ public class RestCurrencyServiceTest {
     @Test
     public void testGetAll() {
 
-        List<Currency> currencyList = currencyService.getAll();
-        assertNotEquals(0,currencyList.size());
-        System.out.println(currencyList.get(0));
+        double uahCurrencyRate = currencyService.getRate("UAH");
+        assertEquals(1,uahCurrencyRate,0);
+
+        double usdCurrencyRate = currencyService.getRate("USD");
+        assertTrue(usdCurrencyRate>25);
     }
 }

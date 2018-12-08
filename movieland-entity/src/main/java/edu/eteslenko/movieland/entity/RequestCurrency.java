@@ -4,5 +4,4 @@ public enum RequestCurrency {
     UAH,
     USD,
     EUR;
-
 }
