@@ -8,6 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class DefaultSecurityService implements SecurityService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private UserDao userDao;
     private Map<String, Session> sessionPool = new ConcurrentHashMap<>();
+    private long sessionExpirationTimeoutSecs;
 
     @Override
     public SessionUserDto auth(User incomeUser) {
@@ -46,7 +48,10 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     private boolean isExpired(Session session) {
-        return session.getExpiredDate().plus(2, ChronoUnit.HOURS).isBefore(LocalDateTime.now());
+        return session
+                .getExpiredDate()
+                .plus(sessionExpirationTimeoutSecs, ChronoUnit.SECONDS)
+                .isBefore(LocalDateTime.now());
     }
 
     private Optional<String> getUserToken(User checkedUser) {
@@ -62,7 +67,7 @@ public class DefaultSecurityService implements SecurityService {
         sessionPool.remove(token);
     }
 
-    @Scheduled(fixedDelay = 5000, initialDelay = 5000)
+    @Scheduled(initialDelayString = "${session.ExpirationTimeoutSecs:7200}", fixedDelay = 60000)
     void clean() {
         logger.debug("Start clean outdated sessions tokens");
         for (Map.Entry<String, Session> sessionEntry : sessionPool.entrySet()) {
@@ -81,5 +86,10 @@ public class DefaultSecurityService implements SecurityService {
     @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Value("${session.ExpirationTimeoutSecs:7200}")
+    public void setSessionExpirationTimeoutSecs(long sessionExpirationTimeoutSecs) {
+        this.sessionExpirationTimeoutSecs = sessionExpirationTimeoutSecs;
     }
 }
