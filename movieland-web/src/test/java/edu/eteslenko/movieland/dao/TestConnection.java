@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
-@ContextConfiguration(locations = { "classpath:testContext.xml" })
+@ContextConfiguration(locations = { "classpath:testContextWeb.xml" })
 public class TestConnection {
 
     @Autowired

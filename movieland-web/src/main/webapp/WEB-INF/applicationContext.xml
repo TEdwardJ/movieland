@@ -1,6 +1,7 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
@@ -120,5 +121,20 @@
     <bean id="countrySelectByMovieIdQuery" class="java.lang.String">
         <constructor-arg
                 value="${query.countryByMovieId}"/>
+    </bean>
+    <bean id="testObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+          p:indentOutput="true"
+          p:defaultViewInclusion="false"
+          p:autoDetectFields="false"
+          p:simpleDateFormat="dd.MM.yyyy"/>
+    <bean id="converter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper" ref="testObjectMapper"/>
+    </bean>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg>
+            <list>
+                <ref bean="converter"/>
+            </list>
+        </constructor-arg>
     </bean>
 </beans>

@@ -2,12 +2,10 @@ package edu.eteslenko.movieland.web.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.eteslenko.movieland.entity.*;
 import edu.eteslenko.movieland.entity.dto.MovieDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -28,7 +26,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.notNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -36,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext
 @ContextConfiguration(locations = {
         "file:src/main/webapp/WEB-INF/MovieDispatcher-servlet.xml",
-        "classpath:testContext.xml"})
+        "classpath:testContextWeb.xml"})
 @WebAppConfiguration
 public class MovieControllerTest {
 

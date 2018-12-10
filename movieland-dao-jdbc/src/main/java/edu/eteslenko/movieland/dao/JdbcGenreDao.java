@@ -34,7 +34,6 @@ public class JdbcGenreDao implements GenreDao {
         logger.debug("Getting all genres for Movie {} from DB", id);
         List<Genre> list =
                 jdbcTemplate.query(genreSelectByMovieIdQuery, ROW_MAPPER, id);
-
         return list;
     }
 

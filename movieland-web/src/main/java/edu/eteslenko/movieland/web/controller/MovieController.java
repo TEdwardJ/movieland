@@ -3,7 +3,6 @@ package edu.eteslenko.movieland.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.eteslenko.movieland.entity.*;
 import edu.eteslenko.movieland.entity.dto.MovieDto;
-import edu.eteslenko.movieland.service.GenreService;
 import edu.eteslenko.movieland.service.MovieService;
 import edu.eteslenko.movieland.web.view.AllMoviesView;
 import edu.eteslenko.movieland.web.view.DetailedMovieView;
@@ -17,19 +16,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static edu.eteslenko.movieland.web.MovieQueryFactory.getMovieQuery;
-
 @RestController
 public class MovieController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private MovieService movieService;
-    private GenreService genreService;
+
+    private MovieRequestFactory queryFactory;
+
+    private MovieRequest getMovieRequest(HashMap<String, String> params){
+        return queryFactory.getMovieRequest(params);
+    }
 
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/movies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getAllMovies(@RequestParam(required = false) HashMap<String, String> params) {
-        MovieRequest movieRequest = getMovieQuery(params);
+        MovieRequest movieRequest = getMovieRequest(params);
         logger.debug("MovieRequest is {}", movieRequest);
         return movieService.getAllMovies(movieRequest);
     }
@@ -37,7 +39,7 @@ public class MovieController {
     @JsonView(AllMoviesView.class)
     @GetMapping(path = "/movie/random", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getThreeRandomMovies(@RequestParam(required = false) HashMap<String, String> params) {
-        MovieRequest movieRequest = getMovieQuery(params);
+        MovieRequest movieRequest = getMovieRequest(params);
         logger.debug("MovieRequest is {}", movieRequest);
         return movieService.getThreeRandomMovies(movieRequest);
     }
@@ -47,7 +49,7 @@ public class MovieController {
     @GetMapping(path = "/movie/genre/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<MovieDto> getMovieByGenre(@PathVariable("id") int genre,
                                           @RequestParam(required = false) HashMap<String, String> params) {
-        MovieRequest movieRequest = getMovieQuery(params);
+        MovieRequest movieRequest = getMovieRequest(params);
         logger.debug("MovieRequest is {}", movieRequest);
         return movieService.getMoviesByGenre(genre, movieRequest);
     }
@@ -65,7 +67,7 @@ public class MovieController {
     }
 
     @Autowired
-    public void setGenreService(GenreService genreService) {
-        this.genreService = genreService;
+    public void setQueryFactory(MovieRequestFactory queryFactory) {
+        this.queryFactory = queryFactory;
     }
 }

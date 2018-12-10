@@ -66,4 +66,19 @@
         <constructor-arg
                 value="SELECT cntr_id, cntr_name FROM movie.v_all_movie_countries_ui mc WHERE mc.m_id = ?;"/>
     </bean>
+    <bean id="testObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+          p:indentOutput="true"
+          p:defaultViewInclusion="false"
+          p:autoDetectFields="false"
+          p:simpleDateFormat="dd.MM.yyyy"/>
+    <bean id="converter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper" ref="testObjectMapper"/>
+    </bean>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg>
+            <list>
+                <ref bean="converter"/>
+            </list>
+        </constructor-arg>
+    </bean>
 </beans>
