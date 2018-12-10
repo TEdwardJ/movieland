@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +27,14 @@ public class DefaultCurrencyService implements CurrencyService {
 
 
     private volatile Map<String, Currency> currencyMap;
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+    private static final ThreadLocal<DateFormat> dateFormatter =
+             new ThreadLocal<DateFormat>(){
+        @Override
+        protected DateFormat initialValue() {
+            return new SimpleDateFormat("yyyyMMdd");
+        }
+    };
+
 
     @Override
     public double getRate(String code) {
@@ -47,7 +55,7 @@ public class DefaultCurrencyService implements CurrencyService {
     @Scheduled(cron = "0 0 0 ? * MON-FRI")
     protected void refresh(){
         ResponseEntity<List<Currency>> response = restTemplate.exchange(
-                ratesUrl.replace("{date}",dateFormatter.format(new Date())),
+                ratesUrl.replace("{date}", dateFormatter.get().format(new Date())),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Currency>>(){});

@@ -8,5 +8,9 @@ import java.util.Map;
 public interface UserDao {
     User getById(int id);
 
+    User getOne(String email);
+
     Map<Integer, User> getById(List<Integer> id);
+
+    User checkPassword(String enteredPassword);
 }
