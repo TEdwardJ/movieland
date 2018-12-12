@@ -31,25 +31,22 @@ public class DefaultSecurityService implements SecurityService {
     public SessionUserDto auth(User incomeUser) {
         User user = userDao.getOne(incomeUser.getEmail());
         String enteredPassword = getMd5(incomeUser.getPassword() + user.getSole());
-        User checkedUser = userDao.checkPassword(enteredPassword);
-        if (checkedUser != null) {
-            String token = getUserToken(checkedUser).orElse(null);
+        if (enteredPassword.equals(user.getPassword())) {
+            String token = getUserToken(user).orElse(null);
             if (token == null) {
                 token = UUID.randomUUID().toString();
-                Session session = new Session(checkedUser, token);
-                sessionPool.put(token, session);
-                return new SessionUserDto(token, user.getLogin());
+                sessionPool.put(token, new Session(user, token));
             } else if (!isExpired(sessionPool.get(token))) {
                 logger.debug("I know you, user. Your session has not been expired yet");
-                return new SessionUserDto(token, checkedUser.getLogin());
             }
+            return new SessionUserDto(token, user.getLogin());
         }
         return null;
     }
 
     private boolean isExpired(Session session) {
         return session
-                .getExpiredDate()
+                .getStartTime()
                 .plus(sessionExpirationTimeoutSecs, ChronoUnit.SECONDS)
                 .isBefore(LocalDateTime.now());
     }
@@ -67,7 +64,7 @@ public class DefaultSecurityService implements SecurityService {
         sessionPool.remove(token);
     }
 
-    @Scheduled(initialDelayString = "${session.ExpirationTimeoutSecs:7200}", fixedDelay = 60000)
+    @Scheduled(initialDelayString = "${session.ExpirationTimeoutSecs:7200000}", fixedDelayString = "${session.cleanUpPeriod:600000}")
     void clean() {
         logger.debug("Start clean outdated sessions tokens");
         for (Map.Entry<String, Session> sessionEntry : sessionPool.entrySet()) {

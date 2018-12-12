@@ -57,6 +57,7 @@ CREATE TABLE movie.user
     usr_name character varying(32) NOT NULL,
     usr_email character varying(32),
     usr_password character(128) NOT NULL,
+    usr_password_enc character(128) NOT NULL,
     usr_sole character varying(32),
     CONSTRAINT user_pkey PRIMARY KEY (usr_id)
 );

@@ -5,18 +5,18 @@ import edu.eteslenko.movieland.entity.User;
 import java.time.LocalDateTime;
 
 public class Session {
-    private LocalDateTime expiredDate;
+    private LocalDateTime startTime;
     private User user;
     private String token;
 
     public Session(User user, String token) {
         this.user = user;
         this.token = token;
-        this.expiredDate = LocalDateTime.now();
+        this.startTime = LocalDateTime.now();
     }
 
-    public LocalDateTime getExpiredDate() {
-        return expiredDate;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     User getUser() {
@@ -30,7 +30,7 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" +
-                "expiredDate=" + expiredDate +
+                "startTime=" + startTime +
                 ", user=" + user +
                 ", token='" + token + '\'' +
                 '}';
