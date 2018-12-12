@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.eteslenko.movieland.entity.*;
 import edu.eteslenko.movieland.entity.dto.MovieDto;
 import edu.eteslenko.movieland.service.MovieService;
+import edu.eteslenko.movieland.service.MovieRequestFactory;
 import edu.eteslenko.movieland.web.view.AllMoviesView;
 import edu.eteslenko.movieland.web.view.DetailedMovieView;
 import org.slf4j.Logger;
@@ -56,9 +57,15 @@ public class MovieController {
 
     @GetMapping(path = "/movie/{movieId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @JsonView(DetailedMovieView.class)
-    public ResponseEntity<MovieDto> getMovieById(@PathVariable int movieId) {
-        Optional<MovieDto> movie = Optional.ofNullable(movieService.getById(movieId));
-        return new ResponseEntity<MovieDto>(movie.get(), movie.isPresent()?HttpStatus.OK:HttpStatus.NOT_FOUND);
+    public ResponseEntity<MovieDto> getMovieById(@PathVariable int movieId,
+                                                 @RequestParam(required = false) HashMap<String, String> params) {
+        MovieRequest movieRequest = getMovieRequest(params);
+        Optional<MovieDto> movie = Optional.ofNullable(movieService.getById(movieId, movieRequest));
+        if (movie.isPresent()){
+            return new ResponseEntity<MovieDto>(movie.get(), HttpStatus.OK);
+        } else{
+            return new ResponseEntity<MovieDto>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Autowired

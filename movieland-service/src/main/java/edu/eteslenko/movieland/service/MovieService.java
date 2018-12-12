@@ -20,4 +20,5 @@ public interface MovieService {
     List<MovieDto> getMoviesByGenre(int genre, MovieRequest movieRequest);
 
     MovieDto getById(int id);
+    MovieDto getById(int id, MovieRequest movieRequest);
 }

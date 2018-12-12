@@ -30,7 +30,7 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public SessionUserDto auth(User incomeUser) {
         User user = userDao.getOne(incomeUser.getEmail());
-        String enteredPassword = md5Apache(incomeUser.getPassword() + user.getSole());
+        String enteredPassword = getMd5(incomeUser.getPassword() + user.getSole());
         User checkedUser = userDao.checkPassword(enteredPassword);
         if (checkedUser != null) {
             String token = getUserToken(checkedUser).orElse(null);
@@ -77,8 +77,7 @@ public class DefaultSecurityService implements SecurityService {
         }
     }
 
-
-    public static String md5Apache(String st) {
+    public static String getMd5(String st) {
         String md5Hex = DigestUtils.md5Hex(st);
         return md5Hex;
     }

@@ -3,7 +3,7 @@ package edu.eteslenko.movieland.web;
 import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.OrderType;
 import edu.eteslenko.movieland.entity.SortingColumn;
-import edu.eteslenko.movieland.web.controller.MovieRequestFactory;
+import edu.eteslenko.movieland.service.MovieRequestFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
