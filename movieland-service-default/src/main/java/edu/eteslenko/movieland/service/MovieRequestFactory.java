@@ -1,4 +1,4 @@
-package edu.eteslenko.movieland.web.controller;
+package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.entity.*;
 import edu.eteslenko.movieland.service.CurrencyService;
@@ -13,7 +13,6 @@ import java.util.Optional;
 @Service
 public class MovieRequestFactory {
 
-    private CurrencyService currencyService;
 
     public MovieRequest getMovieRequest(Map<String, String> requestParams) {
         MovieRequest request = MovieRequest.getDefaultRequest();
@@ -47,8 +46,4 @@ public class MovieRequestFactory {
         return request;
     }
 
-    @Autowired
-    public void setCurrencyService(CurrencyService currencyService) {
-        this.currencyService = currencyService;
-    }
 }

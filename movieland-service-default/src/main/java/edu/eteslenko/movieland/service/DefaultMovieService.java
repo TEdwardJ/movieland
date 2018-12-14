@@ -1,7 +1,6 @@
 package edu.eteslenko.movieland.service;
 
 import edu.eteslenko.movieland.dao.MovieDao;
-import edu.eteslenko.movieland.entity.Currency;
 import edu.eteslenko.movieland.entity.Movie;
 import edu.eteslenko.movieland.entity.MovieRequest;
 import edu.eteslenko.movieland.entity.RequestCurrency;
@@ -27,12 +26,17 @@ public class DefaultMovieService implements MovieService {
         return convertToDto(movieList, RequestCurrency.UAH);
     }
 
+    protected MovieDto convertToDto(Movie movie, double currentRate) {
+        MovieDto movieDto = new MovieDto(movie);
+        movieDto.setPrice(movieDto.getPrice()/currentRate);
+        return movieDto;
+    }
+
     protected List<MovieDto> convertToDto(List<Movie> movieList, RequestCurrency currency) {
         double currentRate = currencyService.getRate(currency.name());
         return movieList
                 .stream()
-                .map(MovieDto::new)
-                .peek(t->t.setPrice(t.getPrice()/currentRate))
+                .map(t->convertToDto(t,currentRate))
                 .collect(Collectors.toList());
     }
 
@@ -74,11 +78,15 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public MovieDto getById(int id) {
+        return getById(id, MovieRequest.getDefaultRequest());
+    }
+
+    public MovieDto getById(int id, MovieRequest request) {
         Movie movie = movieDao.getById(id);
         if (movie == null) {
             return null;
         }
-        MovieDto movieDto = new MovieDto(movie);
+        MovieDto movieDto = convertToDto(movie, currencyService.getRate(request.getCurrency().name()));
         enrichService.enrich(movieDto);
         return movieDto;
     }

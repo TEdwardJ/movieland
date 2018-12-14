@@ -3,6 +3,8 @@ package edu.eteslenko.movieland.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.eteslenko.movieland.web.view.DetailedMovieView;
 
+import java.util.Objects;
+
 public class User {
     @JsonView(DetailedMovieView.class)
     private int id;
@@ -10,6 +12,7 @@ public class User {
     private String nickname;
     private String password;
     private String email;
+    private String sole;
 
     public User() {
     }
@@ -17,6 +20,11 @@ public class User {
     public User(int id, String nickname, String email) {
         this.id = id;
         this.nickname = nickname;
+        this.email = email;
+    }
+
+    public User(String password, String email) {
+        this.password = password;
         this.email = email;
     }
 
@@ -50,6 +58,30 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSole() {
+        return sole;
+    }
+
+    public void setSole(String sole) {
+        this.sole = sole;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId() == user.getId() &&
+                nickname.equals(user.nickname) &&
+                getEmail().equals(user.getEmail()) &&
+                getSole().equals(user.getSole());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), nickname, getEmail(), getSole());
     }
 
     @Override

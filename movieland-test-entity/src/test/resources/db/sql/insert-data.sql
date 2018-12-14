@@ -9,16 +9,16 @@ VALUES(3,'Титаник','Titanic',1997,'Молодые влюбленные Д
 INSERT INTO movie.movie(m_id,m_title,m_title_en,m_release_year,m_description,m_rating,m_price)
 VALUES(4,'Пролетая над гнездом кукушки','One Flew Over the Cuckoo''s Nest',1975,'Сымитировав помешательство в надежде избежать тюремного заключения, Рэндл Патрик МакМерфи попадает в психиатрическую клинику, где почти безраздельным хозяином является жестокосердная сестра Милдред Рэтчед. МакМерфи поражается тому, что прочие пациенты смирились с существующим положением вещей, а некоторые — даже сознательно пришли в лечебницу, прячась от пугающего внешнего мира. И решается на бунт. В одиночку.',8.7,180.0);
 
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(1,'Рональд Рейнольдс','ronald.reynolds66@example.com','paco');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(2,'Дарлин Эдвардс','darlene.edwards15@example.com','bricks');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(3,'Габриэль Джексон','gabriel.jackson91@example.com','hjkl');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(4,'Дэрил Брайант','daryl.bryant94@example.com','exodus');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(5,'Нил Паркер','neil.parker43@example.com','878787');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(6,'Трэвис Райт','travis.wright36@example.com','smart');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(7,'Амелия Кэннеди','amelia.kennedy58@example.com','beaker');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(8,'Айда Дэвис','ida.davis80@example.com','pepsi1');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(9,'Джесси Паттерсон','jessie.patterson68@example.com','tommy');
-INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password) VALUES(10,'Деннис Крейг','dennis.craig82@example.com','coldbeer');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(1,'Рональд Рейнольдс','ronald.reynolds66@example.com','paco','zciteqsyva','578f6be7aa55d65e7f9c5a6693b6ae73');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(2,'Дарлин Эдвардс','darlene.edwards15@example.com','bricks','yehseqhlrq','8d75c25144926618cd7a015e63b84d8b');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(3,'Габриэль Джексон','gabriel.jackson91@example.com','hjkl','nldpvccbgu','37896688177098b567344aa40eec353f');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(4,'Дэрил Брайант','daryl.bryant94@example.com','exodus','nyyiztkvzs','3e87a86bc16cd934c2ea692f6f98ccd1');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(5,'Нил Паркер','neil.parker43@example.com','878787','xhymxmctxi','9e59ea75b4efba8933a3ee255f235b60');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(6,'Трэвис Райт','travis.wright36@example.com','smart','','');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(7,'Амелия Кэннеди','amelia.kennedy58@example.com','beaker','','');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(8,'Айда Дэвис','ida.davis80@example.com','pepsi1','','');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(9,'Джесси Паттерсон','jessie.patterson68@example.com','tommy','','');
+INSERT INTO movie.user(usr_id,usr_name,usr_email,usr_password,usr_sole,usr_password_enc) VALUES(10,'Деннис Крейг','dennis.craig82@example.com','coldbeer','','');
 
 INSERT INTO movie.country(cntr_id,cntr_name) VALUES(1,'США');
 INSERT INTO movie.country(cntr_id,cntr_name) VALUES(2,'Франция');
