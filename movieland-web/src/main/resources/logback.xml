@@ -8,12 +8,20 @@
             <fileNamePattern>log/archive/movieland-%d{yyyy-MM-dd}.log.%i</fileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %X{requestId} %X{userId} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+
+<!--
+    <logger name="edu.eteslenko.movieland.web.controller.SecurityUserController" level="INFO">
+        <appender-ref ref="rollingFile" />
+    </logger>
+-->
+
 
     <root level="debug">
         <appender-ref ref="rollingFile" />
     </root>
+
 
 </configuration>

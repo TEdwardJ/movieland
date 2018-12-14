@@ -97,7 +97,6 @@ public class MovieControllerTest {
 
     @Test
     public void testGetTreeRandom() throws Exception {
-
         List<MovieDto> listMovie1 = performMovieRequest("/movie/random", 3);
         List<MovieDto> listMovie2 = performMovieRequest("/movie/random", 3);
 

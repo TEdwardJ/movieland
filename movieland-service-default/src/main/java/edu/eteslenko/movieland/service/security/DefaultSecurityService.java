@@ -64,6 +64,14 @@ public class DefaultSecurityService implements SecurityService {
         sessionPool.remove(token);
     }
 
+    @Override
+    public User getByUuid(String token) {
+        if (sessionPool.containsKey(token)){
+            return sessionPool.get(token).getUser();
+        }
+        return null;
+    }
+
     @Scheduled(initialDelayString = "${session.ExpirationTimeoutSecs:7200000}", fixedDelayString = "${session.cleanUpPeriod:600000}")
     void clean() {
         logger.debug("Start clean outdated sessions tokens");

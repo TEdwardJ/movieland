@@ -19,6 +19,10 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    <mvc:interceptors>
+        <bean class="edu.eteslenko.movieland.web.interceptor.UserInterceptor"/>
+        <bean class="edu.eteslenko.movieland.web.interceptor.LoggingInterceptor"/>
+    </mvc:interceptors>
     <bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
           p:indentOutput="true"
           p:defaultViewInclusion="false"

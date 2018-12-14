@@ -8,4 +8,6 @@ public interface SecurityService {
     SessionUserDto auth(User user);
 
     void logout(String token);
+
+    User getByUuid(String token);
 }
